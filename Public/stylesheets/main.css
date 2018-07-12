@@ -1,0 +1,31 @@
+/*
+ * Globals
+ */
+#map {
+  width: 100% !important;
+  height: 100vh !important;
+  padding: 0px;
+}
+
+body {
+  margin: 0px;
+}
+
+/* Links */
+a,
+a:focus,
+a:hover {
+  color: #fff;
+}
+
+/* Custom default button */
+.btn-default,
+.btn-default:hover,
+.btn-default:focus {
+  color: #333;
+  text-shadow: none;
+  /* Prevent inheritance from `body` */
+  background-color: #fff;
+  border: 1px solid #fff;
+}
+/*# sourceMappingURL=main.css.map */
