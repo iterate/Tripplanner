@@ -50,7 +50,6 @@ function addGeocoder() {
         ev.result.geometry.coordinates[1],
         ev.result.geometry.coordinates[0]
       );
-      // map.getSource("single-point").setData(ev.result.geometry);
     });
   });
 }
