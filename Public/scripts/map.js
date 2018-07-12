@@ -16,13 +16,9 @@ function initMap() {
 
   //Adding navigation control(zoom in, out, rotate)
   map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
-  map.addControl(
-    new MapboxGeocoder({
-      accessToken: mapboxgl.accessToken
-    })
-  );
 
   addMapClickListeners();
+  addGeocoder();
 }
 
 function addMapClickListeners() {
@@ -34,4 +30,27 @@ function addMapClickListeners() {
 function addMarker(lat, lng) {
   var marker = new mapboxgl.Marker();
   marker.setLngLat([lng, lat]).addTo(map);
+}
+
+function addGeocoder() {
+  var geocoder = new MapboxGeocoder({
+    accessToken: mapboxgl.accessToken
+  });
+
+  map.addControl(geocoder);
+
+  // After the map style has loaded on the page, add a source layer and default
+  // styling for a single point.
+  map.on("load", function() {
+    // Listen for the `geocoder.input` event that is triggered when a user
+    // makes a selection and add a symbol that matches the result.
+    geocoder.on("result", function(ev) {
+      debugger;
+      addMarker(
+        ev.result.geometry.coordinates[1],
+        ev.result.geometry.coordinates[0]
+      );
+      // map.getSource("single-point").setData(ev.result.geometry);
+    });
+  });
 }
