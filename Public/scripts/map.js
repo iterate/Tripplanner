@@ -1,5 +1,6 @@
 var mapboxgl;
 var map;
+var markers = [];
 
 window.onload = function() {
   mapboxgl.accessToken =
@@ -23,13 +24,58 @@ function initMap() {
 
 function addMapClickListeners() {
   map.on("click", function(e) {
-    addMarker(e.lngLat.lat, e.lngLat.lng);
+    var marker = addMarker(e.lngLat.lat, e.lngLat.lng);
+
+    var popup = addPopup(e.lngLat);
+    marker.setPopup(popup, "Hallo, du er kul");
   });
 }
 
 function addMarker(lat, lng) {
   var marker = new mapboxgl.Marker();
   marker.setLngLat([lng, lat]).addTo(map);
+  markers.push(marker);
+
+  marker.on("click", function(e) {
+    console.log("Du har klikket...");
+    console.log(e);
+  });
+  return marker;
+}
+
+function markerClick(e) {
+  console.log("Du har klikket...");
+  console.log(e);
+}
+
+function addPopup(lngLat, popupTxt) {
+  var markerHeight = 50,
+    markerRadius = 10,
+    linearOffset = 25;
+  var popupOffsets = {
+    top: [0, 0],
+    "top-left": [0, 0],
+    "top-right": [0, 0],
+    bottom: [0, -markerHeight],
+    "bottom-left": [
+      linearOffset,
+      (markerHeight - markerRadius + linearOffset) * -1
+    ],
+    "bottom-right": [
+      -linearOffset,
+      (markerHeight - markerRadius + linearOffset) * -1
+    ],
+    left: [markerRadius, (markerHeight - markerRadius) * -1],
+    right: [-markerRadius, (markerHeight - markerRadius) * -1]
+  };
+  var popup = new mapboxgl.Popup({
+    offset: popupOffsets,
+    className: "my-class"
+  })
+    .setLngLat(lngLat)
+    .setHTML("<h3>Jeg er en popup</h3>")
+    .addTo(map);
+  return popup;
 }
 
 function addGeocoder() {
