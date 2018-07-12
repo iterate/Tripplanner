@@ -11,7 +11,7 @@ window.onload = function() {
 function initMap() {
   map = new mapboxgl.Map({
     container: "map",
-    style: "mapbox://styles/mapbox/streets-v9"
+    style: "mapbox://styles/mapbox/light-v9"
   });
 
   //Adding navigation control(zoom in, out, rotate)
@@ -45,7 +45,6 @@ function addGeocoder() {
     // Listen for the `geocoder.input` event that is triggered when a user
     // makes a selection and add a symbol that matches the result.
     geocoder.on("result", function(ev) {
-      debugger;
       addMarker(
         ev.result.geometry.coordinates[1],
         ev.result.geometry.coordinates[0]
