@@ -3,6 +3,7 @@ import VisDatabaseTest from "./components/VisDatabaseTest";
 import MapboxWrapper from "./components/MapboxWrapper";
 import database from "./database";
 import WaitPage from "./components/WaitPage";
+import Frontpage from "./components/Frontpage";
 
 const stateFrontPage = 0;
 const stateInactiveMap = 1;
@@ -66,22 +67,31 @@ class App extends Component {
 		}
 
 		return (
-			<div>
-				<p>{"Front page"}</p>
-				<input
-					type="text"
-					onChange={e => {
-						this.state.createRoomName = e.target.value;
-						console.log(this.state.createRoomName);
-					}}
-					onKeyDown={e => e.keyCode === 13 && this.onCreateRoom()}
-				/>
-				<input
-					type="button"
-					value="Create map"
-					onClick={this.onCreateRoom.bind(this)}
-				/>
-			</div>
+			<Frontpage
+				onTextChange={(e => (this.state.createRoomName = e.target.value)).bind(
+					this
+				)}
+				onTextKeyDown={(e => e.keyCode === 13 && this.onCreateRoom()).bind(
+					this
+				)}
+				onCreateRoomClick={this.onCreateRoom.bind(this)}
+			/>
+			// <div>
+			// 	<p>{"Front page"}</p>
+			// 	<input
+			// 		type="text"
+			// 		onChange={e => {
+			// 			this.state.createRoomName = e.target.value;
+			// 			console.log(this.state.createRoomName);
+			// 		}}
+			// 		onKeyDown={e => e.keyCode === 13 && this.onCreateRoom()}
+			// 	/>
+			// 	<input
+			// 		type="button"
+			// 		value="Create map"
+			// 		onClick={this.onCreateRoom.bind(this)}
+			// 	/>
+			// </div>
 		);
 	}
 }
