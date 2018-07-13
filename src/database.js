@@ -8,7 +8,9 @@ import firebase from "firebase";
 const database = {
 	storeMarker: storeMarker,
 	loadMarkersOnce: loadMarkersOnce,
-	addMarkerListener: addMarkerListener
+	addMarkerListener: addMarkerListener,
+	checkIfRoomExists: checkIfRoomExists,
+	createRoom: createRoom
 };
 export default database;
 
@@ -24,15 +26,37 @@ var config = {
 // const myFirebase = firebase.initializeApp(config);
 firebase.initializeApp(config);
 
-function storeMarker(roomName, lng, lat, title) {
+function checkIfRoomExists(roomId, callback) {
+	try {
+		firebase
+			.database()
+			.ref("rooms/" + roomId)
+			.once("value")
+			.then(snapshot => {
+				let roomExists = snapshot.val() !== null;
+				callback(roomExists);
+				console.log("Room", roomId, roomExists);
+			});
+	} catch (error) {
+		callback(false);
+	}
+}
+function createRoom(roomId) {
+	firebase
+		.database()
+		.ref("rooms/")
+		.set({ roomId: {} });
+}
+
+function storeMarker(roomId, lng, lat, title) {
 	var newKey = firebase
 		.database()
-		.ref("/rooms/" + roomName)
+		.ref("/rooms/" + roomId)
 		.push().key;
 
 	firebase
 		.database()
-		.ref("rooms/" + roomName + "/" + newKey)
+		.ref("rooms/" + roomId + "/" + newKey)
 		.set({
 			title: title,
 			lng: lng,
@@ -42,8 +66,8 @@ function storeMarker(roomName, lng, lat, title) {
 
 //returns all markers within a given room.
 // callbacks: an object where each key is an marker id, and the value is the marker data
-function loadMarkersOnce(roomName, callback) {
-	var roomRef = firebase.database().ref("/rooms/" + roomName);
+function loadMarkersOnce(roomId, callback) {
+	var roomRef = firebase.database().ref("/rooms/" + roomId);
 	roomRef.once("value").then(function(snapshot) {
 		callback(snapshot.val());
 	});
