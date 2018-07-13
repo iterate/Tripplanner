@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import FirebaseHandeler from "./FirebaseHandler";
 import VisDatabaseTest from "./VisDatabaseTest";
+import MapboxWrapper from "./components/map";
 
 class App extends Component {
 	render() {
@@ -15,6 +16,7 @@ class App extends Component {
 			//render map and points according to the roomId
 			return (
 				<div className="App">
+					<MapboxWrapper />;
 					<FirebaseHandeler>
 						<VisDatabaseTest />
 					</FirebaseHandeler>
