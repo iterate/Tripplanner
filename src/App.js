@@ -1,9 +1,13 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
+import FirebaseHandeler from "./FirebaseHandler";
 
 class App extends Component {
 	render() {
-		return <div className="App" />;
+		return (
+			<div className="App">
+				<FirebaseHandeler />
+			</div>
+		);
 	}
 }
 
