@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import VisDatabaseTest from "./components/VisDatabaseTest";
 import MapboxWrapper from "./components/MapboxWrapper";
 import database from "./database";
+import WaitPage from "./components/WaitPage";
 
 const stateFrontPage = 0;
 const stateInactiveMap = 1;
@@ -45,7 +46,7 @@ class App extends Component {
 
 	render() {
 		if (this.state.page === stateWaitPage) {
-			return <p>{"2 sec"}</p>;
+			return <WaitPage />;
 		} else if (this.state.page === stateInactiveMap) {
 			return (
 				<div>
