@@ -7,6 +7,14 @@ const Map = ReactMapboxGl({
 });
 
 class MapboxWrapper extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			markers: []
+		};
+		this.addMarker = this.addMarker.bind(this);
+	}
+
 	componentDidMount() {
 		//setup databse marker listener
 		this.props.database.addMarkerListener(this.props.roomId, newVal =>
@@ -15,12 +23,16 @@ class MapboxWrapper extends React.Component {
 	}
 
 	//just puts a marker on the map
-	showMarker(marker) {
-		console.log(marker);
+	showMarker(lnglat) {
+		console.log(lnglat);
+
+		this.setState({
+			markers: [...this.state.markers, lngLat]
+		});
 	}
 
 	//saves a marker to the database and adds it to the map
-	addMarker(marker) {
+	addMarker(lngLat) {
 		this.storeMarker(marker);
 		this.showMarker(marker); //the marker will probably be showed again after its stored, might want to fox this
 	}
@@ -33,14 +45,21 @@ class MapboxWrapper extends React.Component {
 		return (
 			<Map
 				style="mapbox://styles/mapbox/light-v9"
+				zoom={[0]}
+				onClick={(map, event) => this.addMarker(event.lngLat)}
 				containerStyle={{
 					height: "100vh",
 					width: "100vw"
 				}}
 			>
-				<Layer type="symbol" id="marker" layout={{ "icon-image": "marker-15" }}>
-					<Feature coordinates={[-0.481747846041145, 51.3233379650232]} />
-				</Layer>
+				{this.state.markers.map(lngLat => (
+					<Marker coordinates={lngLat} offset="0" anchor="bottom">
+						<img
+							src="https://image.flaticon.com/icons/png/512/33/33622.png"
+							style={{ width: "20px" }}
+						/>
+					</Marker>
+				))}
 			</Map>
 		);
 	}
