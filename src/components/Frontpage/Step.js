@@ -22,9 +22,9 @@ const ImgDiv = styled.div`
   display: flex;
 `;
 const StepHeading = styled.h3`
-  text-align: center;
+  text-align: inherit;
 `;
-const DescriptionDiv = styled.h3`
+const DescriptionDiv = styled.div`
   width: 80%;
   margin: auto;
 `;
