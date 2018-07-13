@@ -1,5 +1,5 @@
 import React from "react";
-import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
+import ReactMapboxGl, { Layer, Feature, Marker } from "react-mapbox-gl";
 
 const Map = ReactMapboxGl({
 	accessToken:
@@ -23,8 +23,8 @@ class MapboxWrapper extends React.Component {
 	}
 
 	//just puts a marker on the map
-	showMarker(lnglat) {
-		console.log(lnglat);
+	showMarker(lngLat) {
+		console.log(lngLat);
 
 		this.setState({
 			markers: [...this.state.markers, lngLat]
@@ -33,12 +33,17 @@ class MapboxWrapper extends React.Component {
 
 	//saves a marker to the database and adds it to the map
 	addMarker(lngLat) {
-		this.storeMarker(marker);
-		this.showMarker(marker); //the marker will probably be showed again after its stored, might want to fox this
+		this.storeMarker(lngLat);
+		//this.showMarker(lngLat); //the marker will probably be showed again after its stored, might want to fox this
 	}
 
-	storeMarker(marker) {
-		this.props.database.storeMarker(this.props.roomId, 0, 0, "tag");
+	storeMarker(lngLat) {
+		this.props.database.storeMarker(
+			this.props.roomId,
+			lngLat.lng,
+			lngLat.lat,
+			"tag"
+		);
 	}
 
 	render() {
