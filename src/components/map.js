@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactMapboxGl, { Layer, Feature } from 'react-mapbox-gl';
+import ReactMapboxGl, { Layer, Feature, Marker } from 'react-mapbox-gl';
 
 
 const Map = ReactMapboxGl({
@@ -7,20 +7,42 @@ const Map = ReactMapboxGl({
 });
 
 class MapboxWrapper extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			markers: []
+		};
+		this.addMarker = this.addMarker.bind(this);
+	}
+
+	addMarker(lngLat) {
+		this.setState({
+			markers: [...this.state.markers, lngLat]
+		});
+	}
+
 	render() {
 		return (
 			<Map
 				style="mapbox://styles/mapbox/light-v9"
+				zoom={[0]}
+				onClick= {(map, event) =>
+					this.addMarker(event.lngLat)
+				}
 				containerStyle={{
 					height: '100vh',
 					width: '100vw'
 				}}>
-				<Layer
-					type='symbol'
-					id="marker"
-					layout={{ 'icon-image': 'marker-15' }}>
-					<Feature coordinates={[-0.481747846041145, 51.3233379650232]}/>
-				</Layer>
+				{this.state.markers.map(lngLat =>
+					<Marker
+						coordinates={lngLat}
+						offset="0"
+						anchor="bottom">
+						<img src="https://image.flaticon.com/icons/png/512/33/33622.png"
+							style={{width:'20px'}}
+						/>
+					</Marker>
+				)}
 			</Map>
 		);
 	}
