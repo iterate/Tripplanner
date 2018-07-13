@@ -36,10 +36,6 @@ function addMarker(lat, lng) {
   marker.setLngLat([lng, lat]).addTo(map);
   markers.push(marker);
 
-  marker.on("click", function(e) {
-    console.log("Du har klikket...");
-    console.log(e);
-  });
   return marker;
 }
 
@@ -89,7 +85,7 @@ function addGeocoder() {
   // styling for a single point.
   map.on("load", function() {
     // Listen for the `geocoder.input` event that is triggered when a user
-    // makes a selection and add a symbol that matches the result.
+    // adding a marker on the location of the search
     geocoder.on("result", function(ev) {
       addMarker(
         ev.result.geometry.coordinates[1],

@@ -7,8 +7,14 @@
   padding: 0px;
 }
 
+input[type="text"]:focus {
+  background-color: white;
+}
+
 body {
   margin: 0px;
+  font-family: "Roboto Condensed", sans-serif;
+  background: #cacfc6;
 }
 
 /* Links */
@@ -27,5 +33,134 @@ a:hover {
   /* Prevent inheritance from `body` */
   background-color: #fff;
   border: 1px solid #fff;
+}
+
+#header {
+  background-image: url("../images/headerPhoto.png");
+  height: 450px;
+}
+
+#header h1,
+#header h3 {
+  background: #ffffffbf;
+  margin: 5px 10px;
+  font-weight: 300;
+}
+
+#header .headerTxt {
+  position: absolute;
+  margin-left: 160px;
+  z-index: 1000;
+  font-weight: 300;
+  text-align: initial;
+}
+
+#header h1 {
+  margin-top: 144px;
+}
+
+#header h3 {
+  margin-top: 190px;
+}
+
+#container {
+  max-width: 1400px;
+  margin: auto;
+  background: #f9f7f7;
+}
+
+#content {
+  padding: 100px 0;
+}
+
+h1 {
+  font-weight: 400;
+  text-align: center;
+}
+
+#steps {
+  width: 80%;
+  margin: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+#steps .stepDiv {
+  width: 33.333%;
+  float: left;
+  -webkit-box-ordinal-group: 2;
+      -ms-flex-order: 1;
+          order: 1;
+  padding: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+#steps .stepDiv div {
+  width: 100%;
+}
+
+#steps .stepDiv span {
+  font-weight: 300;
+}
+
+#steps .stepDiv h3 {
+  text-align: center;
+}
+
+#steps .stepDiv .imgDiv {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+#steps .stepDiv img {
+  height: 37px;
+  margin: auto;
+}
+
+#tripPlanner {
+  font-weight: 300;
+  background: #ffffffeb;
+  position: absolute;
+  z-index: 100;
+  top: 250px;
+  right: 10%;
+  padding: 20px;
+}
+
+.button {
+  background-color: #639fac;
+  border: none;
+  color: white;
+  padding: 10px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 10px;
+  margin: 10px 20px;
+  cursor: pointer;
+}
+
+#logo {
+  position: absolute;
+  z-index: 100;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+input {
+  width: 200px;
+  height: 30px;
+  border: 1px solid #cacaca;
+  border-radius: 1px;
+  font-size: 12px;
 }
 /*# sourceMappingURL=main.css.map */
