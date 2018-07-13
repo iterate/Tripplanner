@@ -21,13 +21,12 @@ export default class FirebaseComponent extends Component {
 		console.log("firebase initialized");
 
 		//this.documentLoaded();
+		this.database = {
+			storeMarker: this.storeMarker.bind(this),
+			loadMarkersOnce: this.loadMarkersOnce.bind(this),
+			addMarkerListener: this.addMarkerListener.bind(this)
+		};
 	}
-
-	database = {
-		storeMarker: this.storeMarker.bind(this),
-		loadMarkersOnce: this.loadMarkersOnce.bind(this),
-		addRoomMarkerListener: this.addRoomMarkerListener.bind(this)
-	};
 
 	storeMarker(roomName, lng, lat, title) {
 		var newKey = firebase
@@ -46,18 +45,17 @@ export default class FirebaseComponent extends Component {
 	}
 
 	//returns all markers within a given room.
-	// returns: an object where each key is an marker id, and the value is the marker data
-	loadMarkersOnce(roomName) {
+	// callbacks: an object where each key is an marker id, and the value is the marker data
+	loadMarkersOnce(roomName, callback) {
 		var roomRef = firebase.database().ref("/rooms/" + roomName);
 		roomRef.once("value").then(function(snapshot) {
-			return snapshot.val();
+			callback(snapshot.val());
 		});
 	}
 
-	// get notified when a new marker is stored.
-	// will callback once immediately with all stored data, and later when new data is added.
-	// callback must take the value of the newly added marker
-	addRoomMarkerListener(roomName, callback) {
+	// initially callbacks once for each existing marker for the given room in the datanase
+	// thereafter get notified whenever a new marker is added
+	addMarkerListener(roomName, callback) {
 		var roomRef = firebase.database().ref("/rooms/" + roomName);
 		roomRef.on("child_added", snapshot => callback(snapshot.val()));
 	}
