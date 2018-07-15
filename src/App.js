@@ -58,7 +58,12 @@ class App extends Component {
 			);
 		} else if (this.state.page === stateActiveMap) {
 			return (
-				<div>
+				<div style={{
+					position: 'absolute',
+					top: 0,
+					right: 0,
+					bottom: 0,
+					left: 0}}>
 					<MapboxWrapper database={database} roomId={this.roomId} />;
 				</div>
 			);

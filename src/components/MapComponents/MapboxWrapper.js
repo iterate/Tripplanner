@@ -1,5 +1,6 @@
 import React from "react";
 import ReactMapGL, {Marker} from 'react-map-gl';
+import Dimensions from 'react-dimensions';
 
 
 class MapboxWrapper extends React.Component {
@@ -7,6 +8,8 @@ class MapboxWrapper extends React.Component {
 		super(props);
 		this.state = {
 			viewport: {
+				width: this.props.containerWidth,
+				height: this.props.containerHeight,
 				latitude: 59.914344,
 				longitude: 10.744033,
 				zoom: 15
@@ -70,4 +73,4 @@ class MapboxWrapper extends React.Component {
 	}
 }
 
-export default MapboxWrapper;
+export default Dimensions()(MapboxWrapper);
