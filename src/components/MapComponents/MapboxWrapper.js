@@ -1,68 +1,71 @@
 import React from "react";
-import ReactMapboxGl, { Layer, Feature, Marker } from "react-mapbox-gl";
+import ReactMapGL, {Marker} from 'react-map-gl';
 
-const Map = ReactMapboxGl({
-	accessToken:
-		"pk.eyJ1IjoibmluYXRoOTMiLCJhIjoiY2pqaWlscDRsM3Q2aDNrcGxsaHQ1dG02NCJ9.7hwR--67HQrjo9MDxJ8HJQ"
-});
 
 class MapboxWrapper extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			viewport: {
+				latitude: 59.914344,
+				longitude: 10.744033,
+				zoom: 15
+			},
 			markers: []
 		};
-		this.addMarker = this.addMarker.bind(this);
+		this.clickHandler = this.clickHandler.bind(this);
 	}
 
 	componentDidMount() {
-		//setup databse marker listener
-		this.props.database.addMarkerListener(this.props.roomId, newVal =>
-			this.showMarker(newVal)
-		);
+		this.props.database.addMarkerListener(this.props.roomId, this.updateMarkers);
 	}
 
-	//just puts a marker on the map
-	showMarker(lngLat) {
-		console.log(lngLat);
-
+	updateMarkers(lngLat) {
 		this.setState({
 			markers: [...this.state.markers, lngLat]
 		});
 	}
 
-	//saves a marker to the database and adds it to the map
-	addMarker(lngLat) {
-		//gather and store more info
-		this.storeMarker(lngLat);
-
-		//this.showMarker(lngLat); //the marker will probably be showed again after its stored, might want to fox this
+	pushNewPointToDB(lngLat) {
+		this.props.database.storeMarker(
+			this.props.roomId,
+			lngLat.lng,
+			lngLat.lat,
+			"tag"
+		);
 	}
 
-	storeMarker(lngLat) {
-		this.props.database.storeMarker(this.props.roomId, lngLat);
+	clickHandler(click_event) {
+		this.pushNewPointToDB(click_event.lngLat);
+	}
+
+	renderMarker(lngLat, i) {
+		return (
+			<Marker
+				key={i}
+				latitude={lngLat[1]}
+				longitude={lngLat[0]}
+				offsetLeft={0}
+				offsetTop={0}>
+				<div id={i} className='station'>
+					<img
+						src="https://placekitten.com/g/200/200"
+						style={{ width: '20px' }}
+					/>
+				</div>
+			</Marker>
+		);
 	}
 
 	render() {
 		return (
-			<Map
-				style="mapbox://styles/mapbox/light-v9"
-				zoom={[0]}
-				onClick={(map, event) => this.addMarker(event.lngLat)}
-				containerStyle={{
-					height: "100vh",
-					width: "100vw"
-				}}
-			>
-				{this.state.markers.map(lngLat => (
-					<Marker coordinates={lngLat} offset="0" anchor="bottom">
-						<img
-							src="https://image.flaticon.com/icons/png/512/33/33622.png"
-							style={{ width: "20px" }}
-						/>
-					</Marker>
-				))}
-			</Map>
+			<ReactMapGL
+				mapboxApiAccessToken={'pk.eyJ1IjoibmluYXRoOTMiLCJhIjoiY2pqaWlscDRsM3Q2aDNrcGxsaHQ1dG02NCJ9.7hwR--67HQrjo9MDxJ8HJQ'}
+				{...this.state.viewport}
+				onViewportChange={(viewport) => this.setState({viewport})}
+				onClick={this.clickHandler}>
+				{this.state.markers.map(this.renderMarker)}
+			</ReactMapGL>
 		);
 	}
 }
