@@ -2,6 +2,7 @@ import React from "react";
 import ReactMapGL, {Marker} from 'react-map-gl';
 import Dimensions from 'react-dimensions';
 import Config from './config.json';
+import MARKER_STYLE from './marker-style';
 
 
 class MapboxWrapper extends React.Component {
@@ -68,6 +69,7 @@ class MapboxWrapper extends React.Component {
 				{...this.state.viewport}
 				onViewportChange={(viewport) => this.setState({viewport})}
 				onClick={this.clickHandler}>
+				<style>{MARKER_STYLE}</style>
 				{this.state.markers.map(this.renderMarker)}
 			</ReactMapGL>
 		);
