@@ -1,6 +1,7 @@
 import React from "react";
 import ReactMapGL, {Marker} from 'react-map-gl';
 import Dimensions from 'react-dimensions';
+import Config from './config.json';
 
 
 class MapboxWrapper extends React.Component {
@@ -63,7 +64,7 @@ class MapboxWrapper extends React.Component {
 	render() {
 		return (
 			<ReactMapGL
-				mapboxApiAccessToken={'pk.eyJ1IjoibmluYXRoOTMiLCJhIjoiY2pqaWlscDRsM3Q2aDNrcGxsaHQ1dG02NCJ9.7hwR--67HQrjo9MDxJ8HJQ'}
+				mapboxApiAccessToken={Config.accessToken}
 				{...this.state.viewport}
 				onViewportChange={(viewport) => this.setState({viewport})}
 				onClick={this.clickHandler}>
