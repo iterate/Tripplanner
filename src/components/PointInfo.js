@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const PointDiv = styled.div`
+  font-family: "Lato", sans-serif;
   background: #ffffffd4;
   position: absolute;
   top: 10px;
