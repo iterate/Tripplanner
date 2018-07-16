@@ -54,27 +54,30 @@ function createRoom(roomId, callback) {
 			.set({ exists: true });
 	} catch (e) {
 		//assumes that an error indicates room not created
-		if (callback !== null) callback(false);
+		if (callback !== undefined) callback(false);
 		return;
 	}
-	if (callback !== null) callback(true);
+	if (callback !== undefined) callback(true);
 }
 
-function storeMarker(roomId, lng, lat, title) {
-	//get a unique random key for the new point
-	var newKey = firebase
-		.database()
-		.ref("/rooms/" + roomId + "/markers")
-		.push().key;
-	//store marker data at the unique location
-	firebase
-		.database()
-		.ref("rooms/" + roomId + "/markers/" + newKey)
-		.set({
-			title: title,
-			lng: lng,
-			lat: lat
-		});
+function storeMarker(roomId, markerData, callback) {
+	let markerWasStored;
+	try {
+		//get a unique random key for the new point
+		var newKey = firebase
+			.database()
+			.ref("/rooms/" + roomId + "/markers")
+			.push().key;
+		//store marker data at the unique location
+		firebase
+			.database()
+			.ref("rooms/" + roomId + "/markers/" + newKey)
+			.set(markerData);
+		markerWasStored = true;
+	} catch (e) {
+		markerWasStored = false;
+	}
+	if (callback !== undefined) callback(markerWasStored);
 }
 
 //returns all markers within a given room.

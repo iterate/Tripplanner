@@ -38,12 +38,7 @@ class MapboxWrapper extends React.Component {
 	}
 
 	storeMarker(lngLat) {
-		this.props.database.storeMarker(
-			this.props.roomId,
-			lngLat.lng,
-			lngLat.lat,
-			"tag"
-		);
+		this.props.database.storeMarker(this.props.roomId, lngLat);
 	}
 
 	render() {
