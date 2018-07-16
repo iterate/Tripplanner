@@ -3,11 +3,13 @@ import styled from "styled-components";
 
 const StepDiv = styled.div`
   width: 30%;
-  float: left;
   order: 1;
   padding: 20px;
   display: flex;
   flex-direction: column;
+  // @media (min-width: 768px) {
+  //   width: 100%;
+  // }
 `;
 
 const SpanTxt = styled.span`
@@ -32,7 +34,7 @@ const DescriptionDiv = styled.div`
 class Step extends Component {
   render() {
     return (
-      <StepDiv>
+      <StepDiv className={this.props.className}>
         <ImgDiv>
           <Img src={this.props.img} />
         </ImgDiv>
