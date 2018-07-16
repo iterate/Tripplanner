@@ -13,7 +13,7 @@ class MapboxWrapper extends React.Component {
 			height: this.props.containerHeight,
 			latitude: 59.914344,
 			longitude: 10.744033,
-			zoom: 1
+			zoom: 15
 		},
 		markers: [],
 		mapRef: React.createRef()
