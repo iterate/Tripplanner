@@ -14,6 +14,8 @@ const database = {
 };
 export default database;
 
+const roomPath = "/rooms/";
+
 var config = {
 	apiKey: "AIzaSyCVzw8DEn6ohfXvSoHWrX5SZZeb-lWj5uM",
 	authDomain: "tripplanner-222bd.firebaseapp.com",
@@ -33,30 +35,41 @@ function checkIfRoomExists(roomId, callback) {
 			.ref("rooms/" + roomId)
 			.once("value")
 			.then(snapshot => {
+				//console.log("Room", roomId, roomExists);
 				let roomExists = snapshot.val() !== null;
 				callback(roomExists);
-				console.log("Room", roomId, roomExists);
 			});
 	} catch (error) {
 		callback(false);
 	}
 }
-function createRoom(roomId) {
-	firebase
-		.database()
-		.ref("rooms/")
-		.set({ roomId: {} });
+
+//Create a new room, overrides existing ones
+//callbacks when a room is created, returns wether a new room was actually created
+function createRoom(roomId, callback) {
+	try {
+		firebase
+			.database()
+			.ref("rooms/" + roomId)
+			.set({ exists: true });
+	} catch (e) {
+		//assumes that an error indicates room not created
+		if (callback !== null) callback(false);
+		return;
+	}
+	if (callback !== null) callback(true);
 }
 
 function storeMarker(roomId, lng, lat, title) {
+	//get a unique random key for the new point
 	var newKey = firebase
 		.database()
-		.ref("/rooms/" + roomId)
+		.ref("/rooms/" + roomId + "/markers")
 		.push().key;
-
+	//store marker data at the unique location
 	firebase
 		.database()
-		.ref("rooms/" + roomId + "/" + newKey)
+		.ref("rooms/" + roomId + "/markers/" + newKey)
 		.set({
 			title: title,
 			lng: lng,
@@ -67,7 +80,7 @@ function storeMarker(roomId, lng, lat, title) {
 //returns all markers within a given room.
 // callbacks: an object where each key is an marker id, and the value is the marker data
 function loadMarkersOnce(roomId, callback) {
-	var roomRef = firebase.database().ref("/rooms/" + roomId);
+	var roomRef = firebase.database().ref("/rooms/" + roomId + "/markers");
 	roomRef.once("value").then(function(snapshot) {
 		callback(snapshot.val());
 	});
@@ -75,7 +88,7 @@ function loadMarkersOnce(roomId, callback) {
 
 // initially callbacks once for each existing marker for the given room in the datanase
 // thereafter get notified whenever a new marker is added
-function addMarkerListener(roomName, callback) {
-	var roomRef = firebase.database().ref("/rooms/" + roomName);
+function addMarkerListener(roomId, callback) {
+	var roomRef = firebase.database().ref("/rooms/" + roomId + "/markers");
 	roomRef.on("child_added", snapshot => callback(snapshot.val()));
 }
