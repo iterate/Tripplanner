@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import Warning from "./../Warning";
 
 const CreateMapDiv = styled.div`
   font-weight: 300;
@@ -7,16 +8,21 @@ const CreateMapDiv = styled.div`
   padding: 20px;
   display: -ms-flexbox;
   display: flex;
-  width: 400px;
-  -ms-flex-direction: column;
+  max-width: 400px;
   flex-direction: column;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
+
   align-items: center;
-  align-self: flex-end;
-  margin-right: 20px;
-  margin-top: 20px;
+
+  margin-bottom: 10px;
+  flex-align: center;
+
+  @media (min-width: 768px) {
+    align-items: center;
+    align-self: flex-end;
+    margin-right: 10px;
+  }
+  @media (min-width: 1024px) {
+  }
 `;
 const CreateMapTitle = styled.h3``;
 
@@ -47,11 +53,14 @@ const Button = styled.button`
   border-radius: 4px;
   margin: 10px 20px;
   width: 60%;
+  &:hover {
+    background: rgb(151, 183, 204);
+  }
 `;
 
 const Createmap = props => (
   <CreateMapDiv>
-    <h3>Create a room, start planning</h3>
+    <h3>Create a map, start planning</h3>
     <div>
       <span>Adresse.in/</span>
       <InputBox
@@ -62,6 +71,12 @@ const Createmap = props => (
     </div>
     <Button onClick={props.onCreateRoomClick}>Create room</Button>
     <span>Already have a map? Visit exsisting map</span>
+    {props.warning ? (
+      <Warning
+        warningl1={"Map is already in use"}
+        warningl2={"Choose a new name"}
+      />
+    ) : null}
   </CreateMapDiv>
 );
 

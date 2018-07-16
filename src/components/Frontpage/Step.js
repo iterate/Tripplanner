@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import styled from "styled-components";
 
 const StepDiv = styled.div`
-  width: 30%;
   order: 1;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  // @media (min-width: 768px) {
-  //   width: 100%;
-  // }
+  max-width: 400px;
+  @media (min-width: 768px) {
+    width: 30%;
+  }
 `;
 
 const SpanTxt = styled.span`
