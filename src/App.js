@@ -38,11 +38,28 @@ class App extends Component {
 	}
 
 	onCreateRoom(e) {
-		let newpath = "/" + this.state.createRoomName;
-		console.log("newpath:", newpath);
-		window.location.pathname = newpath;
+		let newName = this.state.createRoomName;
+		let newPath = "/" + newName;
 
-		//e.preventDefault();
+		//If the room requested to create already exist, display a message and don't create the room.
+		//Otherwise create it and navigate to it
+		database.checkIfRoomExists(newName, exists => {
+			if (exists) {
+				console.log("The map you are creating already exists :(");
+				return;
+			}
+
+			database.createRoom(newName, created => {
+				if (!created) {
+					console.log("Couldn't create the map :( Please try again");
+					return;
+				}
+
+				window.location.pathname = newPath;
+			});
+		});
+
+		//console.log("newpath:", newpath);
 	}
 
 	render() {

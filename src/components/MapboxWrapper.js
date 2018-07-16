@@ -33,17 +33,14 @@ class MapboxWrapper extends React.Component {
 
 	//saves a marker to the database and adds it to the map
 	addMarker(lngLat) {
+		//gather and store more info
 		this.storeMarker(lngLat);
+
 		//this.showMarker(lngLat); //the marker will probably be showed again after its stored, might want to fox this
 	}
 
 	storeMarker(lngLat) {
-		this.props.database.storeMarker(
-			this.props.roomId,
-			lngLat.lng,
-			lngLat.lat,
-			"tag"
-		);
+		this.props.database.storeMarker(this.props.roomId, lngLat);
 	}
 
 	render() {
