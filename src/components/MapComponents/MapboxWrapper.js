@@ -53,6 +53,14 @@ class MapboxWrapper extends React.Component {
 		});
 	};
 
+	jumpHandler = (lat, lng) => {
+		let coordinate = {
+			lat: lat,
+			lng: lng
+		};
+		this.loadMarker(coordinate);
+	}
+
 	//what is rendered per marker
 	renderMarker = (data, i) => {
 		//check if data is invalid
@@ -86,6 +94,7 @@ class MapboxWrapper extends React.Component {
 				<style>{MARKER_STYLE}</style>
 				{this.state.markers.map(this.renderMarker)}
 				<Geocoder
+					jumpHandler={this.jumpHandler}
 					mapRef={this.state.mapRef}
 					onViewportChange={this.viewportHandler}
 					mapboxApiAccessToken={Config.accessToken}

@@ -30,6 +30,7 @@ class Geocoder extends Component {
 					transitionInterpolator: new FlyToInterpolator(),
 					transitionDuration: 3000
 				});
+				this.props.jumpHandler(latitude, longitude);
 			} else {
 				onViewportChange({ longitude, latitude });
 			}
