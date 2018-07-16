@@ -1,18 +1,20 @@
 {
-  "name": "tripplanner",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "mapbox-gl": "^0.47.0-beta.1",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
-    "react-mapbox-gl": "^3.8.0",
-    "react-scripts": "1.1.4"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
-  }
+	"name": "tripplanner",
+	"version": "0.1.0",
+	"private": true,
+	"dependencies": {
+		"firebase": "^5.2.0",
+		"mapbox-gl": "^0.47.0-beta.1",
+		"react": "^16.4.1",
+		"react-dom": "^16.4.1",
+		"react-mapbox-gl": "^3.8.0",
+		"react-scripts": "1.1.4",
+		"styled-components": "^3.3.3"
+	},
+	"scripts": {
+		"start": "react-scripts start",
+		"build": "react-scripts build",
+		"test": "react-scripts test --env=jsdom",
+		"eject": "react-scripts eject"
+	}
 }
