@@ -9,7 +9,6 @@ const HeaderDiv = styled.div`
   @media (min-width: 768px) {
     align-items: center;
     align-self: flex-end;
-    margin-right: 10px;
     background-image: url("./images/headerPhoto.png");
   }
   @media (min-width: 1024px) {
@@ -44,7 +43,7 @@ const HeadingSubtitle = styled.h3`
   ${headingStyle};
   display: none;
   @media (min-width: 768px) {
-    display: block;
+    display: inline;
   }
 `;
 
