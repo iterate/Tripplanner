@@ -10,12 +10,12 @@ export default `
 }
 .station {
   border-radius: 20px;
-  padding-right: 12px;
-  margin: -12px;
+  padding: 3px;
+  //margin: -12px;
   color: transparent;
-  line-height: 24px;
-  font-size: 13px;
-  white-space: nowrap;
+  //line-height: 24px;
+  //font-size: 13px;
+  //white-space: nowrap;
 }
 .station span {
   display: none;
