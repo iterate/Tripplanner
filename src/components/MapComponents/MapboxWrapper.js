@@ -3,6 +3,7 @@ import ReactMapGL, {Marker} from 'react-map-gl';
 import Dimensions from 'react-dimensions';
 import Config from './config.json';
 import MARKER_STYLE from './marker-style';
+import Geocoder from './Geocoder';
 
 
 class MapboxWrapper extends React.Component {
@@ -14,7 +15,8 @@ class MapboxWrapper extends React.Component {
 			longitude: 10.744033,
 			zoom: 1
 		},
-		markers: []
+		markers: [],
+		mapRef: React.createRef()
 	};
 
 	componentDidMount  = () => {
@@ -37,6 +39,12 @@ class MapboxWrapper extends React.Component {
 
 	clickHandler = (click_event) => {
 		this.pushNewPointToDB(click_event.lngLat);
+	}
+
+	viewportHandler = (viewport) => {
+		this.setState({
+			viewport: {...this.state.viewport, ...viewport}
+		});
 	}
 
 	renderMarker = (lngLat, i) => {
@@ -64,12 +72,17 @@ class MapboxWrapper extends React.Component {
 	render = () => {
 		return (
 			<ReactMapGL
+				ref={this.state.mapRef}
 				mapboxApiAccessToken={Config.accessToken}
 				{...this.state.viewport}
-				onViewportChange={(viewport) => this.setState({viewport})}
+				onViewportChange={this.viewportHandler}
 				onClick={this.clickHandler}>
 				<style>{MARKER_STYLE}</style>
 				{this.state.markers.map(this.renderMarker)}
+				<Geocoder
+					mapRef={this.state.mapRef}
+					onViewportChange={this.viewportHandler}
+					mapboxApiAccessToken={Config.accessToken} />
 			</ReactMapGL>
 		);
 	}
