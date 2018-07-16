@@ -13,7 +13,7 @@ const StepDiv = styled.div`
     align-items: center;
   }
   @media (min-width: 1024px) {
-    // width: 80%;
+    width: 80%;
   }
 `;
 

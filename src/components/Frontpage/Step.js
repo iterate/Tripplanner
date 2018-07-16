@@ -27,8 +27,10 @@ const StepHeading = styled.h3`
   text-align: inherit;
 `;
 const DescriptionDiv = styled.div`
-  width: 80%;
   margin: auto;
+  @media (min-width: 768px) {
+    width: 80%;
+  }
 `;
 
 class Step extends Component {
