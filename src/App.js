@@ -14,7 +14,8 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			page: stateWaitPage
+			page: stateWaitPage,
+			mapInUseWarning: false
 		};
 
 		//get the path specified after the domain in the url.
@@ -46,6 +47,7 @@ class App extends Component {
 		database.checkIfRoomExists(newName, exists => {
 			if (exists) {
 				console.log("The map you are creating already exists :(");
+				this.setState({ mapInUseWarning: true });
 				return;
 			}
 
@@ -55,11 +57,20 @@ class App extends Component {
 					return;
 				}
 
+				this.setState({ mapInUseWarning: false });
 				window.location.pathname = newPath;
 			});
 		});
 
 		//console.log("newpath:", newpath);
+	}
+
+	onCreateRoomTextChange(e) {
+		this.state.createRoomName = e.target.value;
+		this.setState({
+			createRoomName: e.target.value,
+			mapInUseWarning: false
+		});
 	}
 
 	render() {
@@ -85,9 +96,8 @@ class App extends Component {
 
 		return (
 			<Frontpage
-				onTextChange={(e => (this.state.createRoomName = e.target.value)).bind(
-					this
-				)}
+				mapInUseWarning={this.state.mapInUseWarning}
+				onTextChange={this.onCreateRoomTextChange.bind(this)}
 				onTextKeyDown={(e => e.keyCode === 13 && this.onCreateRoom()).bind(
 					this
 				)}
