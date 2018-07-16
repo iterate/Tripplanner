@@ -4,6 +4,13 @@ import Dimensions from "react-dimensions";
 import Config from "./config.json";
 import MARKER_STYLE from "./marker-style";
 import Geocoder from "./Geocoder";
+import PointInfo from "../PointInfo";
+import styled from "styled-components";
+
+const ScreenedPointInfo = styled(PointInfo)`
+	//z-index: 10;
+	position: absolute;
+`;
 
 class MapboxWrapper extends React.Component {
 	state = {
@@ -15,6 +22,7 @@ class MapboxWrapper extends React.Component {
 			zoom: 2
 		},
 		markers: [],
+		activeMarkerIndex: -1,
 		mapRef: React.createRef()
 	};
 
@@ -26,9 +34,9 @@ class MapboxWrapper extends React.Component {
 		let markerData = {
 			lng: data.lng,
 			lat: data.lat,
-			title: "Title",
+			title: "Cool thing ye",
 			link: "https://tripplanner.iterate.no/",
-			description: "This is a cool place! OMG we must visit this place!!"
+			comment: "This is a cool place! OMG we must visit this place!!"
 		};
 		this.setState({
 			markers: [...this.state.markers, markerData]
@@ -44,13 +52,47 @@ class MapboxWrapper extends React.Component {
 	};
 
 	clickHandler = click_event => {
-		this.pushNewPointToDB(click_event.lngLat);
+		if (this.state.activeMarkerIndex !== -1) {
+			this.setState({ activeMarkerIndex: -1 });
+			click_event.preventDefault();
+		} else {
+			this.pushNewPointToDB(click_event.lngLat);
+		}
 	};
 
 	viewportHandler = viewport => {
 		this.setState({
 			viewport: { ...this.state.viewport, ...viewport }
 		});
+	};
+
+	onUpdateMarker(data) {
+		console.log("Marker updated:", data);
+		this.setState({ activeMarkerIndex: -1 });
+	}
+
+	renderActiveMarkerMenu = () => {
+		if (this.state.activeMarkerIndex !== -1) {
+			let activeMarker = this.state.markers[this.state.activeMarkerIndex];
+			return (
+				<div>
+					<Marker
+						key={-1}
+						latitude={activeMarker.lat}
+						longitude={activeMarker.lng}
+						offsetLeft={0}
+						offsetTop={0}
+					>
+						<ScreenedPointInfo
+							title={activeMarker.title}
+							link={activeMarker.link}
+							comment={activeMarker.comment}
+							onSaveMarker={this.onUpdateMarker.bind(this)}
+						/>
+					</Marker>
+				</div>
+			);
+		} else return null;
 	};
 
 	//what is rendered per marker
@@ -69,7 +111,15 @@ class MapboxWrapper extends React.Component {
 				offsetTop={0}
 			>
 				{data.title}
-				<div id={i} className="station" onClick={e => console.log(e)} />
+				<div
+					id={i}
+					className="station"
+					onClick={() =>
+						this.setState({
+							activeMarkerIndex: i
+						})
+					}
+				/>
 			</Marker>
 		);
 	};
@@ -85,6 +135,7 @@ class MapboxWrapper extends React.Component {
 			>
 				<style>{MARKER_STYLE}</style>
 				{this.state.markers.map(this.renderMarker)}
+				{this.renderActiveMarkerMenu()}
 				<Geocoder
 					mapRef={this.state.mapRef}
 					onViewportChange={this.viewportHandler}

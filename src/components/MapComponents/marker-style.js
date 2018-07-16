@@ -4,9 +4,10 @@ export default `
   display: inline-block;
   width: 8px;
   height: 8px;
-  background: red;
+  background: blue;
   border-radius: 8px;
   margin: 0 8px;
+  z-index: -1;
 }
 .station {
   border-radius: 20px;
