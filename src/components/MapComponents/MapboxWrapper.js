@@ -25,19 +25,18 @@ class MapboxWrapper extends React.Component {
 		this.props.database.addMarkerListener(this.props.roomId, this.updateMarkers);
 	}
 
-	updateMarkers(lngLat) {
+	updateMarkers(coordinate) {
 		this.setState({
-			markers: [...this.state.markers, lngLat]
+			markers: [...this.state.markers, [coordinate.lng, coordinate.lat]]
 		});
 	}
 
 	pushNewPointToDB(lngLat) {
-		this.props.database.storeMarker(
-			this.props.roomId,
-			lngLat.lng,
-			lngLat.lat,
-			"tag"
-		);
+		let marker_data = {
+			lng: lngLat[0],
+			lat: lngLat[1]
+		};
+		this.props.database.storeMarker(this.props.roomId, marker_data);
 	}
 
 	clickHandler(click_event) {
