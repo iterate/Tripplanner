@@ -14,7 +14,8 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			page: stateWaitPage
+			page: stateWaitPage,
+			mapInUseWarning: false
 		};
 
 		//get the path specified after the domain in the url.
@@ -38,11 +39,38 @@ class App extends Component {
 	}
 
 	onCreateRoom(e) {
-		let newpath = "/" + this.state.createRoomName;
-		console.log("newpath:", newpath);
-		window.location.pathname = newpath;
+		let newName = this.state.createRoomName;
+		let newPath = "/" + newName;
 
-		//e.preventDefault();
+		//If the room requested to create already exist, display a message and don't create the room.
+		//Otherwise create it and navigate to it
+		database.checkIfRoomExists(newName, exists => {
+			if (exists) {
+				console.log("The map you are creating already exists :(");
+				this.setState({ mapInUseWarning: true });
+				return;
+			}
+
+			database.createRoom(newName, created => {
+				if (!created) {
+					console.log("Couldn't create the map :( Please try again");
+					return;
+				}
+
+				this.setState({ mapInUseWarning: false });
+				window.location.pathname = newPath;
+			});
+		});
+
+		//console.log("newpath:", newpath);
+	}
+
+	onCreateRoomTextChange(e) {
+		this.state.createRoomName = e.target.value;
+		this.setState({
+			createRoomName: e.target.value,
+			mapInUseWarning: false
+		});
 	}
 
 	render() {
@@ -73,9 +101,8 @@ class App extends Component {
 
 		return (
 			<Frontpage
-				onTextChange={(e => (this.state.createRoomName = e.target.value)).bind(
-					this
-				)}
+				mapInUseWarning={this.state.mapInUseWarning}
+				onTextChange={this.onCreateRoomTextChange.bind(this)}
 				onTextKeyDown={(e => e.keyCode === 13 && this.onCreateRoom()).bind(
 					this
 				)}

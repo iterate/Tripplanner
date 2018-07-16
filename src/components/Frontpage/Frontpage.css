@@ -1,10 +1,15 @@
 body {
   background: #647d8d;
+  font-family: "Lato", sans-serif;
 }
 
 h1,
 h2,
 h3 {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Lato", sans-serif;
   font-weight: 500;
+}
+
+.marginAuto {
+  margin: auto;
 }

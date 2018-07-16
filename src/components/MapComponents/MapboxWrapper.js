@@ -5,48 +5,47 @@ import Config from "./config.json";
 import MARKER_STYLE from "./marker-style";
 
 class MapboxWrapper extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      viewport: {
-        width: this.props.containerWidth,
-        height: this.props.containerHeight,
-        latitude: 59.914344,
-        longitude: 10.744033,
-        zoom: 15
-      },
-      markers: []
-    };
-    this.clickHandler = this.clickHandler.bind(this);
-  }
+  state = {
+    viewport: {
+      width: this.props.containerWidth,
+      height: this.props.containerHeight,
+      latitude: 59.914344,
+      longitude: 10.744033,
+      zoom: 1
+    },
+    markers: []
+  };
 
-  componentDidMount() {
-    // this.props.database.addMarkerListener(
-    //   this.props.roomId,
-    //   this.updateMarkers
-    // );
-  }
-
-  updateMarkers(lngLat) {
-    this.setState({
-      markers: [...this.state.markers, lngLat]
-    });
-  }
-
-  pushNewPointToDB(lngLat) {
-    this.props.database.storeMarker(
+  componentDidMount = () => {
+    this.props.database.addMarkerListener(
       this.props.roomId,
-      lngLat.lng,
-      lngLat.lat,
-      "tag"
+      this.updateMarkers
     );
-  }
+  };
 
-  clickHandler(click_event) {
-    // this.pushNewPointToDB(click_event.lngLat);
-  }
+  updateMarkers = coordinate => {
+    this.setState({
+      markers: [...this.state.markers, [coordinate.lng, coordinate.lat]]
+    });
+  };
 
-  renderMarker(lngLat, i) {
+  pushNewPointToDB = lngLat => {
+    let marker_data = {
+      lng: lngLat[0],
+      lat: lngLat[1]
+    };
+    this.props.database.storeMarker(this.props.roomId, marker_data);
+  };
+
+  clickHandler = click_event => {
+    this.pushNewPointToDB(click_event.lngLat);
+  };
+
+  renderMarker = (lngLat, i) => {
+    if (lngLat[0] == null || lngLat[1] == null) {
+      console.error("undefined lngLat in MapboxWrapper.renderMarker()", lngLat);
+      return;
+    }
     return (
       <Marker
         key={i}
@@ -63,9 +62,9 @@ class MapboxWrapper extends React.Component {
         </div>
       </Marker>
     );
-  }
+  };
 
-  render() {
+  render = () => {
     return (
       <ReactMapGL
         mapboxApiAccessToken={Config.accessToken}
@@ -74,10 +73,10 @@ class MapboxWrapper extends React.Component {
         onClick={this.clickHandler}
       >
         <style>{MARKER_STYLE}</style>
-        {/* {this.state.markers.map(this.renderMarker)} */}
+        {this.state.markers.map(this.renderMarker)}
       </ReactMapGL>
     );
-  }
+  };
 }
 
 export default Dimensions()(MapboxWrapper);

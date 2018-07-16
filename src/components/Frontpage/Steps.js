@@ -3,10 +3,18 @@ import styled from "styled-components";
 import Step from "./Step";
 
 const StepDiv = styled.div`
-  width: 80%;
   margin: auto;
   display: flex;
   font-size: 14px;
+  flex-direction: column;
+  align-items: center;
+  @media (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+  }
+  @media (min-width: 1024px) {
+    width: 80%;
+  }
 `;
 
 const Steps = () => (
