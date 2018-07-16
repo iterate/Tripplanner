@@ -21,17 +21,17 @@ class MapboxWrapper extends React.Component {
 		this.clickHandler = this.clickHandler.bind(this);
 	}
 
-	componentDidMount() {
+	componentDidMount  = () => {
 		this.props.database.addMarkerListener(this.props.roomId, this.updateMarkers);
 	}
 
-	updateMarkers(coordinate) {
+	updateMarkers = (coordinate) => {
 		this.setState({
 			markers: [...this.state.markers, [coordinate.lng, coordinate.lat]]
 		});
 	}
 
-	pushNewPointToDB(lngLat) {
+	pushNewPointToDB = (lngLat) => {
 		let marker_data = {
 			lng: lngLat[0],
 			lat: lngLat[1]
@@ -39,11 +39,11 @@ class MapboxWrapper extends React.Component {
 		this.props.database.storeMarker(this.props.roomId, marker_data);
 	}
 
-	clickHandler(click_event) {
+	clickHandler = (click_event) => {
 		this.pushNewPointToDB(click_event.lngLat);
 	}
 
-	renderMarker(lngLat, i) {
+	renderMarker = (lngLat, i) => {
 		return (
 			<Marker
 				key={i}
@@ -61,7 +61,7 @@ class MapboxWrapper extends React.Component {
 		);
 	}
 
-	render() {
+	render = () => {
 		return (
 			<ReactMapGL
 				mapboxApiAccessToken={Config.accessToken}
