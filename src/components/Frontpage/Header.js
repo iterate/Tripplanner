@@ -36,6 +36,7 @@ const HeadingTitle = styled.h1`
     display: block;
     font-size: 30px;
     margin-top: 100px;
+    font-size: 40px;
   }
 `;
 
@@ -44,6 +45,7 @@ const HeadingSubtitle = styled.h3`
   display: none;
   @media (min-width: 768px) {
     display: inline;
+    font-size: 22px;
   }
 `;
 
