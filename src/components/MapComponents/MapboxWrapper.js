@@ -44,6 +44,10 @@ class MapboxWrapper extends React.Component {
 	}
 
 	renderMarker = (lngLat, i) => {
+		if (lngLat[0] == null || lngLat[1] == null) {
+			console.error('undefined lngLat in MapboxWrapper.renderMarker()', lngLat);
+			return;
+		}
 		return (
 			<Marker
 				key={i}
