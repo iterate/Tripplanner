@@ -6,20 +6,16 @@ import MARKER_STYLE from './marker-style';
 
 
 class MapboxWrapper extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			viewport: {
-				width: this.props.containerWidth,
-				height: this.props.containerHeight,
-				latitude: 59.914344,
-				longitude: 10.744033,
-				zoom: 15
-			},
-			markers: []
-		};
-		this.clickHandler = this.clickHandler.bind(this);
-	}
+	state = {
+		viewport: {
+			width: this.props.containerWidth,
+			height: this.props.containerHeight,
+			latitude: 59.914344,
+			longitude: 10.744033,
+			zoom: 1
+		},
+		markers: []
+	};
 
 	componentDidMount  = () => {
 		this.props.database.addMarkerListener(this.props.roomId, this.updateMarkers);
