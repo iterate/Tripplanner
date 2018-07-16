@@ -92,7 +92,7 @@ class App extends Component {
 					right: 0,
 					bottom: 0,
 					left: 0}}>
-					<MapboxWrapper database={database} roomId={this.roomId} />;
+					<MapboxWrapper database={database} roomId={this.roomId} />
 				</div>
 			);
 		} else if (this.state.page !== stateFrontPage) {
