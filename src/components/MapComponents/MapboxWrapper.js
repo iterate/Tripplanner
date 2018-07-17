@@ -30,17 +30,14 @@ class MapboxWrapper extends React.Component {
 		this.props.database.addMarkerListener(this.props.roomId, this.loadMarker);
 	};
 
+	//marker loaded from database
 	loadMarker = data => {
-		let markerData = {
-			lng: data.lng,
-			lat: data.lat,
-			title: "Cool thing ye",
-			link: "https://tripplanner.iterate.no/",
-			comment: "This is a cool place! OMG we must visit this place!!"
-		};
-		this.setState({
-			markers: [...this.state.markers, markerData]
-		});
+		this.putMarker(data);
+	};
+
+	//store marker to database
+	storeMarker = data => {
+		this.props.database.storeMarker(this.props.roomId, data);
 	};
 
 	pushNewPointToDB = lngLat => {
@@ -48,13 +45,31 @@ class MapboxWrapper extends React.Component {
 			lng: lngLat[0],
 			lat: lngLat[1]
 		};
-		this.props.database.storeMarker(this.props.roomId, marker_data);
+		this.storeMarker(marker_data);
+	};
+
+	//put marker in state so it is rendered
+	putMarker = data => {
+		if (data.lng === undefined || data.lat === undefined) {
+			console.error("lat and lang not given", data);
+		}
+		let markerData = {
+			lng: data.lng,
+			lat: data.lat,
+			title: data.title !== undefined ? data.title : "",
+			link: data.link !== undefined ? data.link : "",
+			comment: data.comment !== undefined ? data.comment : ""
+		};
+		this.setState({
+			markers: [...this.state.markers, markerData]
+		});
 	};
 
 	clickHandler = click_event => {
+		click_event.preventDefault();
+
 		if (this.state.activeMarkerIndex !== -1) {
 			this.setState({ activeMarkerIndex: -1 });
-			click_event.preventDefault();
 		} else {
 			let newMarker = {
 				lng: click_event.lngLat[0],
@@ -63,13 +78,13 @@ class MapboxWrapper extends React.Component {
 				link: "",
 				comment: ""
 			};
+			this.putMarker(newMarker);
 			this.setState({
-				markers: [...this.state.markers, newMarker],
-				activeMarkerIndex: this.state.markers.length
+				activeMarkerIndex: this.state.markers.length - 1
 			});
 
 			//store this empty info to the database
-			this.props.database.storeMarker(this.props.roomId, newMarker);
+			this.storeMarker(newMarker);
 		}
 	};
 
@@ -80,14 +95,16 @@ class MapboxWrapper extends React.Component {
 	};
 
 	onSaveMarker(e, data) {
+		e.preventDefault();
+
 		console.log("Marker updated:", data);
 		this.setState({ activeMarkerIndex: -1 });
-		e.preventDefault();
 	}
 
 	renderActiveMarkerMenu = () => {
 		if (this.state.activeMarkerIndex !== -1) {
 			let activeMarker = this.state.markers[this.state.activeMarkerIndex];
+			console.log(this.state.activeMarkerIndex, activeMarker);
 			return (
 				<div>
 					<Marker
@@ -153,7 +170,7 @@ class MapboxWrapper extends React.Component {
 				mapboxApiAccessToken={Config.accessToken}
 				{...this.state.viewport}
 				onViewportChange={this.viewportHandler}
-				onClick={this.clickHandler}
+				onClick={this.clickHandler.bind(this)}
 			>
 				<style>{MARKER_STYLE}</style>
 				{this.state.markers.map(this.renderMarker)}
