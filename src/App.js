@@ -16,7 +16,8 @@ class App extends Component {
     super(props);
     this.state = {
       page: stateWaitPage,
-      mapInUseWarning: false
+      mapInUseWarning: false,
+      notExistsWarning: false
     };
 
     //get the path specified after the domain in the url.
@@ -65,12 +66,29 @@ class App extends Component {
 
     //console.log("newpath:", newpath);
   }
+  onVisitMapClick(e) {
+    let newName = this.state.createRoomName;
+    let newPath = "/" + newName;
+
+    //If the room requested to create already exist, display a message and don't create the room.
+    //Otherwise create it and navigate to it
+    database.checkIfRoomExists(newName, exists => {
+      if (!exists) {
+        this.setState({ notExistsWarning: true });
+        return;
+      }
+
+      this.setState({ notExistsWarning: false });
+      window.location.pathname = newPath;
+    });
+  }
 
   onCreateRoomTextChange(e) {
     this.state.createRoomName = e.target.value;
     this.setState({
       createRoomName: e.target.value,
-      mapInUseWarning: false
+      mapInUseWarning: false,
+      notExistsWarning: false
     });
   }
 
@@ -107,11 +125,13 @@ class App extends Component {
     return (
       <Frontpage
         mapInUseWarning={this.state.mapInUseWarning}
+        notExistsWarning={this.state.notExistsWarning}
         onTextChange={this.onCreateRoomTextChange.bind(this)}
         onTextKeyDown={(e => e.keyCode === 13 && this.onCreateRoom()).bind(
           this
         )}
         onCreateRoomClick={this.onCreateRoom.bind(this)}
+        onVisitMapClick={this.onVisitMapClick.bind(this)}
       />
       // <div>
       // 	<p>{"Front page"}</p>

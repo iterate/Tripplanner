@@ -61,25 +61,61 @@ const Button = styled.button`
   }
 `;
 
+const ChangeViewA = styled.a`
+  cursor: pointer;
+  font-weight: 400;
+  color: #7292a7;
+`;
+
 class Createmap extends Component {
-  constructor(props) {
-    super(props);
+  state = { existingMap: false };
+
+  isExistingMap() {
+    return this.state.existingMap;
+  }
+  changeView() {
+    this.setState({
+      existingMap: !this.state.existingMap
+    });
   }
 
   render() {
     return (
       <CreateMapDiv>
-        <h3>Create a room, start planning</h3>
+        {this.props.notExistsWarning ? (
+          <Warning warningl1="This map doesn't exist" />
+        ) : null}
+        {this.props.mapInUseWarning ? (
+          <Warning warningl1="This map already exists" />
+        ) : null}
+        <h3>
+          {this.isExistingMap()
+            ? "Enter existing map"
+            : "Create a map, start planning"}
+        </h3>
         <div>
-          <span>Adresse.in/</span>
+          <span>tripplanner.iterate.no/</span>
           <InputBox
             placeholder="Groupname, tripname or other"
             onChange={this.props.onTextChange}
             onKeyDown={this.props.onTextKeyDown}
           />
         </div>
-        <Button onClick={this.props.onCreateRoomClick}>Create room</Button>
-        <span>Already have a room? enter exsisting room</span>
+        {this.isExistingMap() ? (
+          <React.Fragment>
+            <Button onClick={this.props.onVisitMapClick}>Visit map</Button>
+            <ChangeViewA onClick={this.changeView.bind(this)}>
+              Create a new map?
+            </ChangeViewA>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <Button onClick={this.props.onCreateRoomClick}>Create map</Button>
+            <ChangeViewA onClick={this.changeView.bind(this)}>
+              Already have a map?
+            </ChangeViewA>
+          </React.Fragment>
+        )}
       </CreateMapDiv>
     );
   }
