@@ -154,6 +154,8 @@ class MapboxWrapper extends React.Component {
 				{...this.state.viewport}
 				onViewportChange={this.viewportHandler}
 				onClick={this.clickHandler}
+				width={this.props.containerWidth}
+				height={this.props.containerHeight}
 			>
 				<style>{MARKER_STYLE}</style>
 				{this.state.markers.map(this.renderMarker)}
