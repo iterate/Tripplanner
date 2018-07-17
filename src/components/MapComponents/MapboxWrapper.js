@@ -147,9 +147,7 @@ class MapboxWrapper extends React.Component {
 					offsetLeft={0}
 					offsetTop={0}
 				>
-					<div
-						style={{ width: "300px", height: "300px", backgroundColor: "red" }}
-					>
+					<div>
 						<ScreenedPointInfo
 							title={activeMarker.title}
 							link={activeMarker.link}
