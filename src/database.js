@@ -10,7 +10,8 @@ const database = {
 	loadMarkersOnce: loadMarkersOnce,
 	addMarkerListener: addMarkerListener,
 	checkIfRoomExists: checkIfRoomExists,
-	createRoom: createRoom
+	createRoom: createRoom,
+	updateMarker: updateMarker
 };
 export default database;
 
@@ -68,6 +69,10 @@ function storeMarker(roomId, markerData, callback) {
 			.database()
 			.ref("/rooms/" + roomId + "/markers")
 			.push().key;
+
+		//add the new key as an attribute to the marker
+		markerData["key"] = newKey;
+
 		//store marker data at the unique location
 		firebase
 			.database()
@@ -78,6 +83,26 @@ function storeMarker(roomId, markerData, callback) {
 		markerWasStored = false;
 	}
 	if (callback !== undefined) callback(markerWasStored);
+}
+
+// Update the marker given by data.key with data in the data object.
+// Attributes not in the data objects will remain.
+// Callbacks with wether the marker was actually updated.
+function updateMarker(roomId, markerId, data, callback) {
+	console.log("Updating marker with:", data);
+	let markerWasUpdated;
+	try {
+		firebase
+			.database()
+			.ref("rooms/" + roomId + "/markers/" + markerId)
+			.update(data);
+
+		markerWasUpdated = true;
+	} catch (e) {
+		markerWasUpdated = false;
+	}
+
+	callback !== undefined && callback(markerWasUpdated);
 }
 
 //returns all markers within a given room.

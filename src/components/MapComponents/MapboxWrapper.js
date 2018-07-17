@@ -27,17 +27,25 @@ class MapboxWrapper extends React.Component {
 	};
 
 	componentDidMount = () => {
-		this.props.database.addMarkerListener(this.props.roomId, this.loadMarker);
+		this.props.database.addMarkerListener(
+			this.props.roomId,
+			this.onMarkerLoaded
+		);
 	};
 
 	//marker loaded from database
-	loadMarker = data => {
+	onMarkerLoaded = data => {
 		this.putMarker(data);
 	};
 
 	//store marker to database
 	storeMarker = data => {
 		this.props.database.storeMarker(this.props.roomId, data);
+	};
+
+	//update marker in database
+	storeMarkerUpdate = (markerId, data) => {
+		this.props.database.updateMarker(this.props.roomId, markerId, data);
 	};
 
 	pushNewPointToDB = lngLat => {
@@ -53,7 +61,9 @@ class MapboxWrapper extends React.Component {
 		if (data.lng === undefined || data.lat === undefined) {
 			console.error("lat and lang not given", data);
 		}
+		//explicit to show what attributes exsist
 		let markerData = {
+			key: data.key,
 			lng: data.lng,
 			lat: data.lat,
 			title: data.title !== undefined ? data.title : "",
@@ -94,17 +104,27 @@ class MapboxWrapper extends React.Component {
 		});
 	};
 
+	//when the save burtton to a marker edit-box is clicked
 	onSaveMarker(e, data) {
 		e.preventDefault();
 
-		console.log("Marker updated:", data);
+		this.storeMarkerUpdate(
+			this.state.markers[this.state.activeMarkerIndex].key,
+			data
+		);
+
 		this.setState({ activeMarkerIndex: -1 });
 	}
 
 	renderActiveMarkerMenu = () => {
 		if (this.state.activeMarkerIndex !== -1) {
 			let activeMarker = this.state.markers[this.state.activeMarkerIndex];
-			console.log(this.state.activeMarkerIndex, activeMarker);
+			console.log(
+				"Active marker: index(",
+				this.state.activeMarkerIndex,
+				")",
+				activeMarker
+			);
 			return (
 				<div>
 					<Marker
@@ -131,7 +151,7 @@ class MapboxWrapper extends React.Component {
 			lat: lat,
 			lng: lng
 		};
-		this.loadMarker(coordinate);
+		this.putMarker(coordinate);
 	};
 
 	//what is rendered per marker
