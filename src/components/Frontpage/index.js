@@ -23,14 +23,7 @@ const Heading = styled.h1`
 
 const Frontpage = props => (
   <ContainerDiv>
-    <Header
-      mapInUseWarning={props.mapInUseWarning}
-      notExistsWarning={props.notExistsWarning}
-      onTextChange={props.onTextChange}
-      onTextKeyDown={props.onTextKeyDown}
-      onCreateRoomClick={props.onCreateRoomClick}
-      onVisitMapClick={props.onVisitMapClick}
-    />
+    <Header {...props} />
     <Content>
       <Heading>How it works</Heading>
       <Steps />

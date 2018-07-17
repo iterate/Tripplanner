@@ -82,12 +82,14 @@ class Createmap extends Component {
   render() {
     return (
       <CreateMapDiv>
-        {this.props.notExistsWarning ? (
-          <Warning warningl1="This map doesn't exist" />
-        ) : null}
-        {this.props.mapInUseWarning ? (
+        {this.props.warning && (
+          <Warning warning={this.props.warning}>
+            {this.props.warning.text}
+          </Warning>
+        )}
+        {/* {this.props.mapInUseWarning ? (
           <Warning warningl1="This map already exists" />
-        ) : null}
+        ) : null} */}
         <h3>
           {this.isExistingMap()
             ? "Enter existing map"

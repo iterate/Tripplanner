@@ -63,8 +63,6 @@ class App extends Component {
         window.location.pathname = newPath;
       });
     });
-
-    //console.log("newpath:", newpath);
   }
   onVisitMapClick(e) {
     let newName = this.state.createRoomName;
@@ -90,6 +88,22 @@ class App extends Component {
       mapInUseWarning: false,
       notExistsWarning: false
     });
+  }
+
+  getWarning() {
+    if (this.state.mapInUseWarning)
+      return {
+        text: "This map already exists",
+        linkTxt: "View map",
+        link: this.onVisitMapClick.bind(this)
+      };
+    if (this.state.notExistsWarning)
+      return {
+        text: "This map doesn't exist",
+        linkTxt: "Create map",
+        link: this.onCreateRoom.bind(this)
+      };
+    return false;
   }
 
   render() {
@@ -124,8 +138,7 @@ class App extends Component {
 
     return (
       <Frontpage
-        mapInUseWarning={this.state.mapInUseWarning}
-        notExistsWarning={this.state.notExistsWarning}
+        warning={this.getWarning()}
         onTextChange={this.onCreateRoomTextChange.bind(this)}
         onTextKeyDown={(e => e.keyCode === 13 && this.onCreateRoom()).bind(
           this
