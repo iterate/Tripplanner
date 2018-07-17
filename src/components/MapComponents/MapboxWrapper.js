@@ -60,8 +60,13 @@ class MapboxWrapper extends React.Component {
 		});
 	};
 
-	updateMarkerInDB = (markerId, data) => {
-		this.props.database.updateMarker(this.props.roomId, markerId, data);
+	updateMarkerInDB = (markerId, data, callback) => {
+		this.props.database.updateMarker(
+			this.props.roomId,
+			markerId,
+			data,
+			callback
+		);
 	};
 
 	pushMarkerToState = (data, callback) => {
@@ -89,15 +94,8 @@ class MapboxWrapper extends React.Component {
 		//TODO: do this on marker update in db
 	};
 
-	onSaveMarkerClick(e, data) {
-		e.preventDefault();
-
-		this.updateMarkerInDB(this.state.activeMarkerKey, data);
-
-		this.setState({ activeMarkerKey: null });
-	}
-
 	onMapClick = click_event => {
+		//click_event.stopPropagation();
 		if (this.state.activeMarkerKey !== null) {
 			this.setState({ activeMarkerKey: null });
 		} else {
@@ -107,6 +105,22 @@ class MapboxWrapper extends React.Component {
 			});
 		}
 	};
+
+	onMarkerClick = (_, markerData) => {
+		this.setState({
+			activeMarkerKey: markerData.key
+		});
+		console.log("New marker data", markerData.key);
+	};
+
+	onSaveMarkerClick(e, data) {
+		this.updateMarkerInDB(this.state.activeMarkerKey, data);
+		//Tidenes ghettofix for at et nytt punkt ikke skal lages når man clicker:
+		setTimeout(() => this.setState({ activeMarkerKey: null }), 300);
+		console.log(e);
+		e.preventDefault();
+		e.stopPropagation();
+	}
 
 	viewportHandler = viewport => {
 		this.setState({
@@ -119,26 +133,22 @@ class MapboxWrapper extends React.Component {
 			lat: lat,
 			lng: lng
 		};
-		this.putMarker(coordinate);
+		this.pushMarkerToDB(coordinate);
 	};
 
 	renderActiveMarkerMenu = () => {
 		if (this.state.activeMarkerKey !== null) {
 			let activeMarker = this.state.markers[this.state.activeMarkerKey];
-			console.log(
-				"Active marker: index(",
-				this.state.activeMarkerKey,
-				")",
-				activeMarker
-			);
 			return (
-				<div>
-					<Marker
-						key={1000}
-						latitude={activeMarker.lat}
-						longitude={activeMarker.lng}
-						offsetLeft={0}
-						offsetTop={0}
+				<Marker
+					key={1000}
+					latitude={activeMarker.lat}
+					longitude={activeMarker.lng}
+					offsetLeft={0}
+					offsetTop={0}
+				>
+					<div
+						style={{ width: "300px", height: "300px", backgroundColor: "red" }}
 					>
 						<ScreenedPointInfo
 							title={activeMarker.title}
@@ -146,8 +156,8 @@ class MapboxWrapper extends React.Component {
 							comment={activeMarker.comment}
 							onSaveMarker={this.onSaveMarkerClick.bind(this)}
 						/>
-					</Marker>
-				</div>
+					</div>
+				</Marker>
 			);
 		} else return null;
 	};
@@ -175,12 +185,9 @@ class MapboxWrapper extends React.Component {
 				{markerData.title}
 				<div
 					id={markerData.key}
-					className="station"
-					onClick={() =>
-						this.setState({
-							activeMarkerKey: markerData.key
-						})
-					}
+					style={{ backgroundColor: "red", width: "8px", height: "8px" }}
+					//className="station"
+					onClick={(e => this.onMarkerClick(e, markerData)).bind(this)}
 				/>
 			</Marker>
 		);
