@@ -61,15 +61,17 @@ function createRoom(roomId, callback) {
 	if (callback !== undefined) callback(true);
 }
 
-function storeMarker(roomId, markerData, callback) {
+function storeMarker(roomId, markerData, callbackNewkey, callbackMarkerStored) {
 	let markerWasStored;
+	let newKey = null;
 	try {
 		//get a unique random key for the new point
-		var newKey = firebase
+		newKey = firebase
 			.database()
 			.ref("/rooms/" + roomId + "/markers")
 			.push().key;
 
+		if (callbackNewkey !== undefined) callbackNewkey(newKey);
 		//add the new key as an attribute to the marker
 		markerData["key"] = newKey;
 
@@ -82,13 +84,17 @@ function storeMarker(roomId, markerData, callback) {
 	} catch (e) {
 		markerWasStored = false;
 	}
-	if (callback !== undefined) callback(markerWasStored);
+	if (callbackMarkerStored !== undefined)
+		callbackMarkerStored(markerWasStored, newKey);
 }
 
 // Update the marker given by data.key with data in the data object.
 // Attributes not in the data objects will remain.
 // Callbacks with wether the marker was actually updated.
 function updateMarker(roomId, markerId, data, callback) {
+	markerId === undefined &&
+		console.log("No markerId given when updating marker");
+
 	console.log("Updating marker with:", data);
 	let markerWasUpdated;
 	try {

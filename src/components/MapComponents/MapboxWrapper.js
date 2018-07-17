@@ -21,43 +21,57 @@ class MapboxWrapper extends React.Component {
 			longitude: 10.744033,
 			zoom: 2
 		},
-		markers: [],
-		activeMarkerIndex: -1,
+		markers: {},
+		activeMarkerKey: null,
+		lastMarkerCreatedKey: undefined,
 		mapRef: React.createRef()
 	};
 
 	componentDidMount = () => {
 		this.props.database.addMarkerListener(
 			this.props.roomId,
-			this.onMarkerLoaded
+			this.onMarkerLoadedFromDB
 		);
 	};
 
 	//marker loaded from database
-	onMarkerLoaded = data => {
-		this.putMarker(data);
+	onMarkerLoadedFromDB = dbMarker => {
+		this.pushMarkerToState(dbMarker, () => {
+			console.log("Marker loaded form db");
+			this.state.lastMarkerCreatedKey === dbMarker.key &&
+				this.setState({ activeMarkerKey: dbMarker.key });
+		});
 	};
 
-	//store marker to database
-	storeMarker = data => {
-		this.props.database.storeMarker(this.props.roomId, data);
+	pushMarkerToDB = data => {
+		let newMarker = {
+			lng: undefined,
+			lat: undefined,
+			title: "",
+			link: "",
+			comment: "",
+			...data
+		};
+		console.log("Pushing marker to db:", newMarker);
+		this.props.database.storeMarker(this.props.roomId, data, newKey => {
+			this.setState({ lastMarkerCreatedKey: newKey });
+		});
 	};
 
-	//update marker in database
-	storeMarkerUpdate = (markerId, data) => {
+	updateMarkerInDB = (markerId, data) => {
 		this.props.database.updateMarker(this.props.roomId, markerId, data);
 	};
 
-	pushNewPointToDB = lngLat => {
-		let marker_data = {
-			lng: lngLat[0],
-			lat: lngLat[1]
-		};
-		this.storeMarker(marker_data);
-	};
+	// pushNewPointToDB = lngLat => {
+	// 	let marker_data = {
+	// 		lng: lngLat[0],
+	// 		lat: lngLat[1]
+	// 	};
+	// 	this.storeMarker(marker_data);
+	// };
 
 	//put marker in state so it is rendered
-	putMarker = data => {
+	pushMarkerToState = (data, callback) => {
 		if (data.lng === undefined || data.lat === undefined) {
 			console.error("lat and lang not given", data);
 		}
@@ -66,35 +80,53 @@ class MapboxWrapper extends React.Component {
 			key: data.key,
 			lng: data.lng,
 			lat: data.lat,
-			title: data.title !== undefined ? data.title : "",
-			link: data.link !== undefined ? data.link : "",
-			comment: data.comment !== undefined ? data.comment : ""
+			title: data.title || "",
+			link: data.link || "",
+			comment: data.comment || ""
 		};
-		this.setState({
-			markers: [...this.state.markers, markerData]
-		});
+		this.setState(
+			state => ({
+				markers: { ...state.markers, [data.key]: markerData }
+			}),
+			() => callback && callback()
+		);
 	};
 
-	clickHandler = click_event => {
-		click_event.preventDefault();
+	updateMarkerInState = dbMarker => {
+		//TODO: do this on marker update in db
+	};
 
-		if (this.state.activeMarkerIndex !== -1) {
-			this.setState({ activeMarkerIndex: -1 });
+	//Createsm a new marker with the given lnd and lat and make this marker active.
+	//The marker is put to render and stored in the database
+	// pushEmptyMarkerToDB = data => {
+	// 	let newMarker = {
+	// 		lng: undefined,
+	// 		lat: undefined,
+	// 		title: "",
+	// 		link: "",
+	// 		comment: "",
+	// 		...data
+	// 	};
+	// 	this.storeMarkerInDatabase(newMarker);
+	// 	// this.putMarker(newMarker, newMarkerIndex => {
+	// 	// 	this.setState(state => ({
+	// 	// 		activeMarkerIndex: state.markers.length - 1
+	// 	// 	}));
+	// 	// 	//store in database
+	// 	// 	this.storeMarkerInDatabase(newMarker);
+	// 	// });
+	// };
+
+	onMapClick = click_event => {
+		//click_event.preventDefault();
+
+		if (this.state.activeMarkerKey !== null) {
+			this.setState({ activeMarkerKey: null });
 		} else {
-			let newMarker = {
+			this.pushMarkerToDB({
 				lng: click_event.lngLat[0],
-				lat: click_event.lngLat[1],
-				title: "",
-				link: "",
-				comment: ""
-			};
-			this.putMarker(newMarker);
-			this.setState({
-				activeMarkerIndex: this.state.markers.length - 1
+				lat: click_event.lngLat[1]
 			});
-
-			//store this empty info to the database
-			this.storeMarker(newMarker);
 		}
 	};
 
@@ -104,24 +136,29 @@ class MapboxWrapper extends React.Component {
 		});
 	};
 
+	jumpHandler = (lat, lng) => {
+		let coordinate = {
+			lat: lat,
+			lng: lng
+		};
+		this.putMarker(coordinate);
+	};
+
 	//when the save burtton to a marker edit-box is clicked
 	onSaveMarker(e, data) {
 		e.preventDefault();
 
-		this.storeMarkerUpdate(
-			this.state.markers[this.state.activeMarkerIndex].key,
-			data
-		);
+		this.updateMarkerInDB(this.state.activeMarkerKey, data);
 
-		this.setState({ activeMarkerIndex: -1 });
+		this.setState({ activeMarkerKey: null });
 	}
 
 	renderActiveMarkerMenu = () => {
-		if (this.state.activeMarkerIndex !== -1) {
-			let activeMarker = this.state.markers[this.state.activeMarkerIndex];
+		if (this.state.activeMarkerKey !== null) {
+			let activeMarker = this.state.markers[this.state.activeMarkerKey];
 			console.log(
 				"Active marker: index(",
-				this.state.activeMarkerIndex,
+				this.state.activeMarkerKey,
 				")",
 				activeMarker
 			);
@@ -146,36 +183,33 @@ class MapboxWrapper extends React.Component {
 		} else return null;
 	};
 
-	jumpHandler = (lat, lng) => {
-		let coordinate = {
-			lat: lat,
-			lng: lng
-		};
-		this.putMarker(coordinate);
-	};
-
 	//what is rendered per marker
-	renderMarker = (data, i) => {
+	renderMarker = markerKeyData => {
+		let key = markerKeyData[0];
+		let markerData = markerKeyData[1];
 		//check if data is invalid
-		if (data.lng == null || data.lat == null) {
-			console.error("undefined lngLat in MapboxWrapper.renderMarker()", data);
+		if (markerData.lng == null || markerData.lat == null) {
+			console.error(
+				"undefined lngLat in MapboxWrapper.renderMarker()",
+				markerData
+			);
 			return;
 		}
 		return (
 			<Marker
-				key={i}
-				latitude={data.lat}
-				longitude={data.lng}
+				key={markerData.key}
+				latitude={markerData.lat}
+				longitude={markerData.lng}
 				offsetLeft={0}
 				offsetTop={0}
 			>
-				{data.title}
+				{markerData.title}
 				<div
-					id={i}
+					id={markerData.key}
 					className="station"
 					onClick={() =>
 						this.setState({
-							activeMarkerIndex: i
+							activeMarkerKey: markerData.key
 						})
 					}
 				/>
@@ -190,10 +224,10 @@ class MapboxWrapper extends React.Component {
 				mapboxApiAccessToken={Config.accessToken}
 				{...this.state.viewport}
 				onViewportChange={this.viewportHandler}
-				onClick={this.clickHandler.bind(this)}
+				onClick={this.onMapClick.bind(this)}
 			>
 				<style>{MARKER_STYLE}</style>
-				{this.state.markers.map(this.renderMarker)}
+				{Object.entries(this.state.markers).map(this.renderMarker)}
 				{this.renderActiveMarkerMenu()}
 				<Geocoder
 					jumpHandler={this.jumpHandler}
