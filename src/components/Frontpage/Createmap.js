@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import styled from "styled-components";
 import Warning from "./../Warning";
 
@@ -61,26 +61,28 @@ const Button = styled.button`
   }
 `;
 
-const Createmap = props => (
-  <CreateMapDiv>
-    <h3>Create a map, start planning</h3>
-    <div>
-      <span>tripplanner.iterate.no/</span>
-      <InputBox
-        placeholder="Groupname, tripname or other"
-        onChange={props.onTextChange}
-        onKeyDown={props.onTextKeyDown}
-      />
-      {props.warning ? (
-        <Warning
-          warningl1={"Map is already in use"}
-          warningl2={"Choose a new name"}
-        />
-      ) : null}
-    </div>
-    <Button onClick={props.onCreateRoomClick}>Create map</Button>
-    <span>Already have a map? Visit exsisting map</span>
-  </CreateMapDiv>
-);
+class Createmap extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <CreateMapDiv>
+        <h3>Create a room, start planning</h3>
+        <div>
+          <span>Adresse.in/</span>
+          <InputBox
+            placeholder="Groupname, tripname or other"
+            onChange={this.props.onTextChange}
+            onKeyDown={this.props.onTextKeyDown}
+          />
+        </div>
+        <Button onClick={this.props.onCreateRoomClick}>Create room</Button>
+        <span>Already have a room? enter exsisting room</span>
+      </CreateMapDiv>
+    );
+  }
+}
 
 export default Createmap;
