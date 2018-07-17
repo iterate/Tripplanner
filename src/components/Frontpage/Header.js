@@ -51,9 +51,9 @@ const HeadingSubtitle = styled.h3`
 
 const Header = props => (
   <HeaderDiv>
-    <HeadingTitle>Save all your trips TODOs in one map!</HeadingTitle>
+    <HeadingTitle>One map to rule them all!</HeadingTitle>
     <HeadingSubtitle>
-      Don´t let your trips itinerary get lost in translation!
+      Combine all your different trip planning resources in one place.
     </HeadingSubtitle>
     <Createmap
       warning={props.warning}

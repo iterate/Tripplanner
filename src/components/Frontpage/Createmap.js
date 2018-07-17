@@ -22,6 +22,9 @@ const CreateMapDiv = styled.div`
     margin-right: 30px;
   }
   @media (min-width: 1024px) {
+    width: 500px;
+    height: 500px;
+    margin-bottom: 30px;
   }
 `;
 const CreateMapTitle = styled.h3``;
@@ -62,7 +65,7 @@ const Createmap = props => (
   <CreateMapDiv>
     <h3>Create a map, start planning</h3>
     <div>
-      <span>Adresse.in/</span>
+      <span>tripplanner.iterate.no/</span>
       <InputBox
         placeholder="Groupname, tripname or other"
         onChange={props.onTextChange}
