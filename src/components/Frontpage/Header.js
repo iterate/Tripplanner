@@ -55,14 +55,7 @@ const Header = props => (
     <HeadingSubtitle>
       Combine all your different trip planning resources in one place.
     </HeadingSubtitle>
-    <Createmap
-      mapInUseWarning={props.mapInUseWarning}
-      notExistsWarning={props.notExistsWarning}
-      onTextChange={props.onTextChange}
-      onTextKeyDown={props.onTextKeyDown}
-      onCreateRoomClick={props.onCreateRoomClick}
-      onVisitMapClick={props.onVisitMapClick}
-    />
+    <Createmap {...props} />
   </HeaderDiv>
 );
 
