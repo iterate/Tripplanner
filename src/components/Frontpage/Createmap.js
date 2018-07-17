@@ -75,7 +75,7 @@ const Createmap = props => (
         />
       ) : null}
     </div>
-    <Button onClick={props.onCreateRoomClick}>Create room</Button>
+    <Button onClick={props.onCreateRoomClick}>Create map</Button>
     <span>Already have a map? Visit exsisting map</span>
   </CreateMapDiv>
 );
