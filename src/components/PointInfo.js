@@ -93,8 +93,8 @@ class PointInfo extends Component {
 					onKeyDown={this.props.onTextKeyDown}
 				/>
 				<Button
-					onClick={() =>
-						this.props.onSaveMarker({
+					onClick={e =>
+						this.props.onSaveMarker(e, {
 							title: this.state.title,
 							link: this.state.link,
 							comment: this.state.comment

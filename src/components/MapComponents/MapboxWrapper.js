@@ -56,7 +56,20 @@ class MapboxWrapper extends React.Component {
 			this.setState({ activeMarkerIndex: -1 });
 			click_event.preventDefault();
 		} else {
-			this.pushNewPointToDB(click_event.lngLat);
+			let newMarker = {
+				lng: click_event.lngLat[0],
+				lat: click_event.lngLat[1],
+				title: "",
+				link: "",
+				comment: ""
+			};
+			this.setState({
+				markers: [...this.state.markers, newMarker],
+				activeMarkerIndex: this.state.markers.length
+			});
+
+			//store this empty info to the database
+			this.props.database.storeMarker(this.props.roomId, newMarker);
 		}
 	};
 
@@ -66,9 +79,10 @@ class MapboxWrapper extends React.Component {
 		});
 	};
 
-	onUpdateMarker(data) {
+	onSaveMarker(e, data) {
 		console.log("Marker updated:", data);
 		this.setState({ activeMarkerIndex: -1 });
+		e.preventDefault();
 	}
 
 	renderActiveMarkerMenu = () => {
@@ -77,7 +91,7 @@ class MapboxWrapper extends React.Component {
 			return (
 				<div>
 					<Marker
-						key={-1}
+						key={1000}
 						latitude={activeMarker.lat}
 						longitude={activeMarker.lng}
 						offsetLeft={0}
@@ -87,7 +101,7 @@ class MapboxWrapper extends React.Component {
 							title={activeMarker.title}
 							link={activeMarker.link}
 							comment={activeMarker.comment}
-							onSaveMarker={this.onUpdateMarker.bind(this)}
+							onSaveMarker={this.onSaveMarker.bind(this)}
 						/>
 					</Marker>
 				</div>
