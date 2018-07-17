@@ -2,7 +2,7 @@ import React from "react";
 import ReactMapGL, { Marker } from "react-map-gl";
 import Dimensions from "react-dimensions";
 import Config from "./config.json";
-import MARKER_STYLE from "./marker-style";
+import MARKER_STYLE from "./marker-style2";
 import Geocoder from "./Geocoder";
 import PointInfo from "../PointInfo";
 import styled from "styled-components";
@@ -183,8 +183,8 @@ class MapboxWrapper extends React.Component {
 				{markerData.title}
 				<div
 					id={markerData.key}
-					style={{ backgroundColor: "red", width: "8px", height: "8px" }}
-					//className="station"
+					//style={{ backgroundColor: "red", width: "8px", height: "8px" }}
+					className="station"
 					onClick={(e => this.onMarkerClick(e, markerData)).bind(this)}
 				/>
 			</Marker>
