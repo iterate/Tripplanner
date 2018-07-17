@@ -8,167 +8,212 @@ import PointInfo from "../PointInfo";
 import styled from "styled-components";
 
 const ScreenedPointInfo = styled(PointInfo)`
-  //z-index: 10;
-  position: absolute;
+	//z-index: 10;
+	position: absolute;
 `;
 
 class MapboxWrapper extends React.Component {
-  state = {
-    viewport: {
-      width: this.props.containerWidth,
-      height: this.props.containerHeight,
-      latitude: 59.914344,
-      longitude: 10.744033,
-      zoom: 2
-    },
-    markers: [],
-    activeMarkerIndex: -1,
-    mapRef: React.createRef()
-  };
+	state = {
+		viewport: {
+			width: this.props.containerWidth,
+			height: this.props.containerHeight,
+			latitude: 59.914344,
+			longitude: 10.744033,
+			zoom: 2
+		},
+		markers: {},
+		activeMarkerKey: null,
+		lastMarkerCreatedKey: undefined,
+		mapRef: React.createRef()
+	};
 
-  componentDidMount = () => {
-    this.props.database.addMarkerListener(this.props.roomId, this.loadMarker);
-  };
+	componentDidMount = () => {
+		this.props.database.addMarkerListener(
+			this.props.roomId,
+			this.onMarkerLoadedFromDB
+		);
+	};
 
-  loadMarker = data => {
-    let markerData = {
-      lng: data.lng,
-      lat: data.lat,
-      title: "",
-      link: "",
-      comment: ""
-    };
-    this.setState({
-      markers: [...this.state.markers, markerData]
-    });
-  };
+	//marker loaded from database
+	onMarkerLoadedFromDB = dbMarker => {
+		//TODO: add a listener for changes
 
-  pushNewPointToDB = lngLat => {
-    let marker_data = {
-      lng: lngLat[0],
-      lat: lngLat[1]
-    };
-    this.props.database.storeMarker(this.props.roomId, marker_data);
-  };
+		this.pushMarkerToState(dbMarker, () => {
+			console.log("Marker loaded form db");
+			this.state.lastMarkerCreatedKey === dbMarker.key &&
+				this.setState({ activeMarkerKey: dbMarker.key });
+		});
+	};
 
-  clickHandler = click_event => {
-    if (this.state.activeMarkerIndex !== -1) {
-      this.setState({ activeMarkerIndex: -1 });
-      click_event.preventDefault();
-    } else {
-      let newMarker = {
-        lng: click_event.lngLat[0],
-        lat: click_event.lngLat[1],
-        title: "",
-        link: "",
-        comment: ""
-      };
-      this.setState({
-        markers: [...this.state.markers, newMarker],
-        activeMarkerIndex: this.state.markers.length
-      });
+	pushMarkerToDB = data => {
+		let newMarker = {
+			lng: undefined,
+			lat: undefined,
+			title: "",
+			link: "",
+			comment: "",
+			...data
+		};
+		console.log("Pushing marker to db:", newMarker);
+		this.props.database.storeMarker(this.props.roomId, data, newKey => {
+			this.setState({ lastMarkerCreatedKey: newKey });
+		});
+	};
 
-      //store this empty info to the database
-      this.props.database.storeMarker(this.props.roomId, newMarker);
-    }
-  };
+	updateMarkerInDB = (markerId, data, callback) => {
+		this.props.database.updateMarker(
+			this.props.roomId,
+			markerId,
+			data,
+			callback
+		);
+	};
 
-  viewportHandler = viewport => {
-    this.setState({
-      viewport: { ...this.state.viewport, ...viewport }
-    });
-  };
+	pushMarkerToState = (data, callback) => {
+		if (data.lng === undefined || data.lat === undefined) {
+			console.error("lat and lang not given", data);
+		}
+		//explicit to show what attributes exsist
+		let markerData = {
+			key: data.key,
+			lng: data.lng,
+			lat: data.lat,
+			title: data.title || "",
+			link: data.link || "",
+			comment: data.comment || ""
+		};
+		this.setState(
+			state => ({
+				markers: { ...state.markers, [data.key]: markerData }
+			}),
+			() => callback && callback()
+		);
+	};
 
-  onSaveMarker(e, data) {
-    console.log("Marker updated:", data);
-    this.setState({ activeMarkerIndex: -1 });
-    e.preventDefault();
-  }
+	updateMarkerInState = dbMarker => {
+		//TODO: do this on marker update in db
+	};
 
-  renderActiveMarkerMenu = () => {
-    if (this.state.activeMarkerIndex !== -1) {
-      let activeMarker = this.state.markers[this.state.activeMarkerIndex];
-      return (
-        <div>
-          <Marker
-            key={1000}
-            latitude={activeMarker.lat}
-            longitude={activeMarker.lng}
-            offsetLeft={0}
-            offsetTop={0}
-          >
-            <ScreenedPointInfo
-              title={activeMarker.title}
-              link={activeMarker.link}
-              comment={activeMarker.comment}
-              onSaveMarker={this.onSaveMarker.bind(this)}
-            />
-          </Marker>
-        </div>
-      );
-    } else return null;
-  };
+	onMapClick = click_event => {
+		//click_event.stopPropagation();
+		if (this.state.activeMarkerKey !== null) {
+			this.setState({ activeMarkerKey: null });
+		} else {
+			this.pushMarkerToDB({
+				lng: click_event.lngLat[0],
+				lat: click_event.lngLat[1]
+			});
+		}
+	};
 
-  jumpHandler = (lat, lng) => {
-    let coordinate = {
-      lat: lat,
-      lng: lng
-    };
-    this.loadMarker(coordinate);
-  };
+	onMarkerClick = (_, markerData) => {
+		this.setState({
+			activeMarkerKey: markerData.key
+		});
+		console.log("New marker data", markerData.key);
+	};
 
-  //what is rendered per marker
-  renderMarker = (data, i) => {
-    //check if data is invalid
-    if (data.lng == null || data.lat == null) {
-      console.error("undefined lngLat in MapboxWrapper.renderMarker()", data);
-      return;
-    }
-    return (
-      <Marker
-        key={i}
-        latitude={data.lat}
-        longitude={data.lng}
-        offsetLeft={0}
-        offsetTop={0}
-      >
-        {data.title}
-        <div
-          id={i}
-          className="station"
-          onClick={() =>
-            this.setState({
-              activeMarkerIndex: i
-            })
-          }
-        />
-      </Marker>
-    );
-  };
+	onSaveMarkerClick(e, data) {
+		this.updateMarkerInDB(this.state.activeMarkerKey, data);
+		//Tidenes ghettofix for at et nytt punkt ikke skal lages når man clicker:
+		setTimeout(() => this.setState({ activeMarkerKey: null }), 300);
+		console.log(e);
+		e.preventDefault();
+		e.stopPropagation();
+	}
 
-  render = () => {
-    return (
-      <ReactMapGL
-        ref={this.state.mapRef}
-        mapboxApiAccessToken={Config.accessToken}
-        {...this.state.viewport}
-        onViewportChange={this.viewportHandler}
-        onClick={this.clickHandler}
-        width={this.props.containerWidth}
-        height={this.props.containerHeight}
-      >
-        <style>{MARKER_STYLE}</style>
-        {this.state.markers.map(this.renderMarker)}
-        {this.renderActiveMarkerMenu()}
-        <Geocoder
-          jumpHandler={this.jumpHandler}
-          mapRef={this.state.mapRef}
-          onViewportChange={this.viewportHandler}
-          mapboxApiAccessToken={Config.accessToken}
-        />
-      </ReactMapGL>
-    );
-  };
+	viewportHandler = viewport => {
+		this.setState({
+			viewport: { ...this.state.viewport, ...viewport }
+		});
+	};
+
+	jumpHandler = (lat, lng) => {
+		let coordinate = {
+			lat: lat,
+			lng: lng
+		};
+		this.pushMarkerToDB(coordinate);
+	};
+
+	renderActiveMarkerMenu = () => {
+		if (this.state.activeMarkerKey !== null) {
+			let activeMarker = this.state.markers[this.state.activeMarkerKey];
+			return (
+				<Marker
+					key={1000}
+					latitude={activeMarker.lat}
+					longitude={activeMarker.lng}
+					offsetLeft={0}
+					offsetTop={0}
+				>
+					<div
+						style={{ width: "300px", height: "300px", backgroundColor: "red" }}
+					>
+						<ScreenedPointInfo
+							title={activeMarker.title}
+							link={activeMarker.link}
+							comment={activeMarker.comment}
+							onSaveMarker={this.onSaveMarkerClick.bind(this)}
+						/>
+					</div>
+				</Marker>
+			);
+		} else return null;
+	};
+
+	//what is rendered per marker
+	renderMarker = markerKeyData => {
+		let key = markerKeyData[0];
+		let markerData = markerKeyData[1];
+		//check if data is invalid
+		if (markerData.lng == null || markerData.lat == null) {
+			console.error(
+				"undefined lngLat in MapboxWrapper.renderMarker()",
+				markerData
+			);
+			return;
+		}
+		return (
+			<Marker
+				key={markerData.key}
+				latitude={markerData.lat}
+				longitude={markerData.lng}
+				offsetLeft={0}
+				offsetTop={0}
+			>
+				{markerData.title}
+				<div
+					id={markerData.key}
+					style={{ backgroundColor: "red", width: "8px", height: "8px" }}
+					//className="station"
+					onClick={(e => this.onMarkerClick(e, markerData)).bind(this)}
+				/>
+			</Marker>
+		);
+	};
+
+	render = () => {
+		return (
+			<ReactMapGL
+				ref={this.state.mapRef}
+				mapboxApiAccessToken={Config.accessToken}
+				{...this.state.viewport}
+				onViewportChange={this.viewportHandler}
+				onClick={this.onMapClick.bind(this)}
+			>
+				<style>{MARKER_STYLE}</style>
+				{Object.entries(this.state.markers).map(this.renderMarker)}
+				{this.renderActiveMarkerMenu()}
+				<Geocoder
+					jumpHandler={this.jumpHandler}
+					mapRef={this.state.mapRef}
+					onViewportChange={this.viewportHandler}
+					mapboxApiAccessToken={Config.accessToken}
+				/>
+			</ReactMapGL>
+		);
+	};
 }
 
 export default Dimensions()(MapboxWrapper);
