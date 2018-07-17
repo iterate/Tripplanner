@@ -36,6 +36,8 @@ class MapboxWrapper extends React.Component {
 
 	//marker loaded from database
 	onMarkerLoadedFromDB = dbMarker => {
+		//TODO: add a listener for changes
+
 		this.pushMarkerToState(dbMarker, () => {
 			console.log("Marker loaded form db");
 			this.state.lastMarkerCreatedKey === dbMarker.key &&
@@ -62,15 +64,6 @@ class MapboxWrapper extends React.Component {
 		this.props.database.updateMarker(this.props.roomId, markerId, data);
 	};
 
-	// pushNewPointToDB = lngLat => {
-	// 	let marker_data = {
-	// 		lng: lngLat[0],
-	// 		lat: lngLat[1]
-	// 	};
-	// 	this.storeMarker(marker_data);
-	// };
-
-	//put marker in state so it is rendered
 	pushMarkerToState = (data, callback) => {
 		if (data.lng === undefined || data.lat === undefined) {
 			console.error("lat and lang not given", data);
@@ -96,30 +89,15 @@ class MapboxWrapper extends React.Component {
 		//TODO: do this on marker update in db
 	};
 
-	//Createsm a new marker with the given lnd and lat and make this marker active.
-	//The marker is put to render and stored in the database
-	// pushEmptyMarkerToDB = data => {
-	// 	let newMarker = {
-	// 		lng: undefined,
-	// 		lat: undefined,
-	// 		title: "",
-	// 		link: "",
-	// 		comment: "",
-	// 		...data
-	// 	};
-	// 	this.storeMarkerInDatabase(newMarker);
-	// 	// this.putMarker(newMarker, newMarkerIndex => {
-	// 	// 	this.setState(state => ({
-	// 	// 		activeMarkerIndex: state.markers.length - 1
-	// 	// 	}));
-	// 	// 	//store in database
-	// 	// 	this.storeMarkerInDatabase(newMarker);
-	// 	// });
-	// };
+	onSaveMarkerClick(e, data) {
+		e.preventDefault();
+
+		this.updateMarkerInDB(this.state.activeMarkerKey, data);
+
+		this.setState({ activeMarkerKey: null });
+	}
 
 	onMapClick = click_event => {
-		//click_event.preventDefault();
-
 		if (this.state.activeMarkerKey !== null) {
 			this.setState({ activeMarkerKey: null });
 		} else {
@@ -144,15 +122,6 @@ class MapboxWrapper extends React.Component {
 		this.putMarker(coordinate);
 	};
 
-	//when the save burtton to a marker edit-box is clicked
-	onSaveMarker(e, data) {
-		e.preventDefault();
-
-		this.updateMarkerInDB(this.state.activeMarkerKey, data);
-
-		this.setState({ activeMarkerKey: null });
-	}
-
 	renderActiveMarkerMenu = () => {
 		if (this.state.activeMarkerKey !== null) {
 			let activeMarker = this.state.markers[this.state.activeMarkerKey];
@@ -175,7 +144,7 @@ class MapboxWrapper extends React.Component {
 							title={activeMarker.title}
 							link={activeMarker.link}
 							comment={activeMarker.comment}
-							onSaveMarker={this.onSaveMarker.bind(this)}
+							onSaveMarker={this.onSaveMarkerClick.bind(this)}
 						/>
 					</Marker>
 				</div>
