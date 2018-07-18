@@ -70,7 +70,7 @@ class PointInfo extends Component {
 				<PinTitle>
 					<h3>Pin</h3>
 					<DeleteBtn
-						onClick={this.props.onCreateRoomClick}
+						onClick={this.props.onDeleteMarkerClick}
 						title="Delete pin"
 					/>
 				</PinTitle>
