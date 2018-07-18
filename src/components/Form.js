@@ -7,18 +7,23 @@ import Database from "../database";
 const FeedbackForm = styled.form`
   display: flex;
   flex-direction: column;
+  padding: 10px;
+  align-items: center;
 `;
 const FeedbackArea = styled.textarea`
   height: 100px;
   resize: none;
   padding: 5px;
   border: 1px solid #cacaca;
+  width: 100%;
+  margin: 10px 0px;
 `;
 
 const EmailStyledInput = styled(InputField)`
   width: 100%;
   padding: 0px;
   margin: 10px 0px;
+  padding: 5px;
 `;
 
 class Form extends React.Component {
@@ -60,7 +65,7 @@ class Form extends React.Component {
         />
         <FeedbackArea
           onChange={this.handleAreaChange}
-          placeholder="Write your feedback here :)"
+          placeholder="Let us know what you think :)"
           value={this.state.feedbackValue}
           id="FeedbackTxt"
         />

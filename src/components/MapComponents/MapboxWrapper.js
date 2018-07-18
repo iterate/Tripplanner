@@ -28,21 +28,29 @@ class MapboxWrapper extends React.Component {
 	};
 
 	componentDidMount = () => {
-		this.props.database.addMarkerListener(
+		this.props.database.addMarkerCreatedListener(
 			this.props.roomId,
 			this.onMarkerLoadedFromDB
 		);
+		this.props.database.addMarkerChangedListener(
+			this.props.roomId,
+			this.updateMarkerInState
+		);
+		this.props.database.addMarkerRemovedListener(
+			this.props.roomId,
+			this.onMarkerRemovedInDB
+		);
 	};
 
-	//marker loaded from database
 	onMarkerLoadedFromDB = dbMarker => {
-		//TODO: add a listener for changes
-
 		this.pushMarkerToState(dbMarker, () => {
-			console.log("Marker loaded form db");
 			this.state.lastMarkerCreatedKey === dbMarker.key &&
 				this.setState({ activeMarkerKey: dbMarker.key });
 		});
+	};
+
+	onMarkerRemovedInDB = dbMarker => {
+		this.removeMarkerFromState(dbMarker.key);
 	};
 
 	pushMarkerToDB = data => {
@@ -55,7 +63,7 @@ class MapboxWrapper extends React.Component {
 			...data
 		};
 		console.log("Pushing marker to db:", newMarker);
-		this.props.database.storeMarker(this.props.roomId, data, newKey => {
+		this.props.database.storeMarker(this.props.roomId, newMarker, newKey => {
 			this.setState({ lastMarkerCreatedKey: newKey });
 		});
 	};
@@ -69,10 +77,16 @@ class MapboxWrapper extends React.Component {
 		);
 	};
 
+	removeMarkerFromDb = markerKey => {
+		this.props.database.removeMarker(this.props.roomId, markerKey);
+	};
+
 	pushMarkerToState = (data, callback) => {
 		if (data.lng === undefined || data.lat === undefined) {
 			console.error("lat and lang not given", data);
 		}
+
+		console.log("Marker added to state");
 		//explicit to show what attributes exsist
 		let markerData = {
 			key: data.key,
@@ -91,7 +105,17 @@ class MapboxWrapper extends React.Component {
 	};
 
 	updateMarkerInState = dbMarker => {
-		//TODO: do this on marker update in db
+		this.setState(state => ({
+			markers: { ...state.markers, [dbMarker.key]: dbMarker }
+		}));
+	};
+
+	removeMarkerFromState = stateMarkerKey => {
+		this.setState(state => {
+			let markers = Object.assign({}, state.markers);
+			delete markers[stateMarkerKey];
+			this.setState({ markers });
+		});
 	};
 
 	onMapClick = click_event => {
@@ -114,13 +138,35 @@ class MapboxWrapper extends React.Component {
 	};
 
 	onSaveMarkerClick(e, data) {
+		Object.entries(data).forEach(
+			() =>
+				data ||
+				console.error(
+					"Data regestered on update marker click is invalid: ",
+					data
+				)
+		);
+
 		this.updateMarkerInDB(this.state.activeMarkerKey, data);
 		//Tidenes ghettofix for at et nytt punkt ikke skal lages når man clicker:
 		setTimeout(() => this.setState({ activeMarkerKey: null }), 300);
-		console.log(e);
+
 		e.preventDefault();
 		e.stopPropagation();
 	}
+
+	onDeleteMarkerClick = e => {
+		let removeMarkerWithKey = this.state.activeMarkerKey;
+
+		setTimeout(() => {
+			this.setState(
+				{
+					activeMarkerKey: null
+				},
+				() => this.removeMarkerFromDb(removeMarkerWithKey)
+			);
+		}, 300);
+	};
 
 	viewportHandler = viewport => {
 		this.setState({
@@ -153,6 +199,7 @@ class MapboxWrapper extends React.Component {
 							link={activeMarker.link}
 							comment={activeMarker.comment}
 							onSaveMarker={this.onSaveMarkerClick.bind(this)}
+							onDeleteMarkerClick={this.onDeleteMarkerClick.bind(this)}
 						/>
 					</div>
 				</Marker>
