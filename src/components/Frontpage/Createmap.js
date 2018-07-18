@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import ReactGA from "react-ga";
 import Warning from "./../Warning";
 import Button from "../ButtonComponent";
+
+ReactGA.initialize("UA-122456830-1");
 
 const CreateMapDiv = styled.div`
   font-weight: 300;
@@ -60,6 +63,14 @@ class Createmap extends Component {
     });
   }
 
+  clickHandler = (description, cb) => {
+    ReactGA.event({
+      category: 'Navigation',
+      action: description,
+    });
+    return cb;
+  };
+
   render() {
     return (
       <CreateMapDiv>
@@ -86,14 +97,18 @@ class Createmap extends Component {
         </div>
         {this.isExistingMap() ? (
           <React.Fragment>
-            <Button onClick={this.props.onVisitMapClick}>Visit map</Button>
+            <Button onClick={
+              this.clickHandler("Visit map", this.props.onVisitMapClick)
+              }>Visit map</Button>
             <ChangeViewA onClick={this.changeView.bind(this)}>
               Create a new map?
             </ChangeViewA>
           </React.Fragment>
         ) : (
           <React.Fragment>
-            <Button onClick={this.props.onCreateRoomClick}>Create map</Button>
+            <Button onClick={
+              this.clickHandler("Create map", this.props.onCreateRoomClick)
+              }>Create map</Button>
             <ChangeViewA onClick={this.changeView.bind(this)}>
               Already have a map?
             </ChangeViewA>
