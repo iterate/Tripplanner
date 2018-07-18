@@ -89,27 +89,46 @@ function storeMarker(roomId, markerData, callbackNewkey, callbackMarkerStored) {
     callbackMarkerStored(markerWasStored, newKey);
 }
 
-function storeFeedback(feedback) {
+// function storeFeedback(feedback, email) {
+//   let feedbackWasStored;
+//   let newKey = null;
+//   try {
+//     //get a unique random key for the new feedback
+//     newKey = firebase
+//       .database()
+//       .ref("/feedback")
+//       .push().key;
+
+//     //store marker data at the unique location
+//     firebase
+//       .database()
+//       .ref("/feedback/" + newKey + "/email/" + email)
+//       .set(feedback);
+//     feedbackWasStored = true;
+//   } catch (e) {
+//     feedbackWasStored = false;
+//   }
+// }
+function storeFeedback(feedback, email) {
   let feedbackWasStored;
   let newKey = null;
   try {
-    //get a unique random key for the new feedback
+    //get a unique random key for the new point
     newKey = firebase
       .database()
-      .ref("/feedback")
+      .ref("/feedback/")
       .push().key;
 
     //store marker data at the unique location
     firebase
       .database()
-      .ref("/feedback/" + newKey)
-      .set(feedback);
+      .ref("/feedback/" + newKey + "/") //feedback + "/email/" + email)
+      .set({ feedback: feedback, email: email });
     feedbackWasStored = true;
   } catch (e) {
     feedbackWasStored = false;
   }
 }
-
 // Update the marker given by data.key with data in the data object.
 // Attributes not in the data objects will remain.
 // Callbacks with wether the marker was actually updated.

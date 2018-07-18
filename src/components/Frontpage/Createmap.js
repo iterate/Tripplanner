@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import Warning from "./../Warning";
 import Button from "../ButtonComponent";
+import InputBox from "../InputComponentStyle";
 
 const CreateMapDiv = styled.div`
   font-weight: 300;
@@ -29,18 +30,6 @@ const CreateMapDiv = styled.div`
   }
 `;
 const CreateMapTitle = styled.h3``;
-
-const InputBox = styled.input`
-  width: 200px;
-  height: 30px;
-  font-size: 14px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: rgb(202, 202, 202);
-  border-image: initial;
-  border-radius: 1px;
-  margin-left: 10px;
-`;
 
 const ChangeViewA = styled.a`
   cursor: pointer;
