@@ -17,27 +17,30 @@ const HeaderDiv = styled.div`
 `;
 
 const headingStyle = `
-  font-weight: 300;
+  font-weight: 400;
   color: white;
   // 
   @media (min-width: 768px) {
-    color: black;
+    color: #49828e;
     background: rgba(255, 255, 255, 0.75);
     align-self: flex-start;
     text-align: initial;
-    margin: 5px 20px;
+    margin: 5px 100px;
+    // margin-left: 100px;
   }
 `;
 
 const HeadingTitle = styled.h1`
   ${headingStyle};
   font-size: 18px;
+  font-weight: 400;
   @media (min-width: 768px) {
     display: block;
     font-size: 30px;
     margin-top: 100px;
     font-size: 40px;
   }
+  // color: #49828e !important;
 `;
 
 const HeadingSubtitle = styled.h3`
@@ -53,7 +56,7 @@ const Header = props => (
   <HeaderDiv>
     <HeadingTitle>One map to rule them all!</HeadingTitle>
     <HeadingSubtitle>
-      Combine all your different trip planning resources in one place.
+      Combine all your trip planning resources in one place.
     </HeadingSubtitle>
     <Createmap {...props} />
   </HeaderDiv>

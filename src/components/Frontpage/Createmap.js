@@ -30,6 +30,7 @@ const CreateMapDiv = styled.div`
     width: 500px;
     height: 500px;
     margin-bottom: 30px;
+    margin-right: 150px;
   }
 `;
 const CreateMapTitle = styled.h3``;

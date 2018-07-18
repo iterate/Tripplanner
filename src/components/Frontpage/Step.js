@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import { H3Heading, H1Heading, H2Heading } from "../HeadingStyles";
 
 const StepDiv = styled.div`
   order: 1;
@@ -15,6 +16,7 @@ const StepDiv = styled.div`
 const SpanTxt = styled.span`
   font-weight: 300;
   width: 80%;
+  font-size: 18px;
 `;
 const Img = styled.img`
   height: 37px;
@@ -22,9 +24,6 @@ const Img = styled.img`
 `;
 const ImgDiv = styled.div`
   display: flex;
-`;
-const StepHeading = styled.h3`
-  text-align: inherit;
 `;
 const DescriptionDiv = styled.div`
   margin: auto;
@@ -41,7 +40,7 @@ class Step extends Component {
           <Img src={this.props.img} />
         </ImgDiv>
         <DescriptionDiv>
-          <StepHeading>{this.props.stepHeading}</StepHeading>
+          <H3Heading>{this.props.stepHeading}</H3Heading>
           <SpanTxt>{this.props.spanTxt}</SpanTxt>
         </DescriptionDiv>
       </StepDiv>
