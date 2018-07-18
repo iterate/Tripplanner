@@ -84,6 +84,7 @@ class MapboxWrapper extends React.Component {
 	pushMarkerToState = (data, callback) => {
 		if (data.lng === undefined || data.lat === undefined) {
 			console.error("lat and lang not given", data);
+			return;
 		}
 
 		console.log("Marker added to state");
