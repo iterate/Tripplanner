@@ -24,7 +24,12 @@ class MapboxWrapper extends React.Component {
 		markers: {},
 		activeMarkerKey: null,
 		lastMarkerCreatedKey: undefined,
-		mapRef: React.createRef()
+		mapRef: React.createRef(),
+		markerEditbox: {
+			title: "",
+			link: "",
+			comment: ""
+		}
 	};
 
 	componentDidMount = () => {
@@ -133,7 +138,12 @@ class MapboxWrapper extends React.Component {
 
 	onMarkerClick = (_, markerData) => {
 		this.setState({
-			activeMarkerKey: markerData.key
+			activeMarkerKey: markerData.key,
+			markerEditbox: {
+				title: markerData.title,
+				link: markerData.link,
+				comment: markerData.comment
+			}
 		});
 		console.log("New marker data", markerData.key);
 	};
@@ -196,9 +206,30 @@ class MapboxWrapper extends React.Component {
 				>
 					<div>
 						<ScreenedPointInfo
-							title={activeMarker.title}
-							link={activeMarker.link}
-							comment={activeMarker.comment}
+							title={this.state.markerEditbox.title}
+							link={this.state.markerEditbox.link}
+							comment={this.state.markerEditbox.comment}
+							onTitleChange={(e =>
+								this.setState({
+									markerEditbox: {
+										...this.state.markerEditbox,
+										title: e.target.value
+									}
+								})).bind(this)}
+							onLinkChange={(e =>
+								this.setState({
+									markerEditbox: {
+										...this.state.markerEditbox,
+										link: e.target.value
+									}
+								})).bind(this)}
+							onCommentChange={(e =>
+								this.setState({
+									markerEditbox: {
+										...this.state.markerEditbox,
+										comment: e.target.value
+									}
+								})).bind(this)}
 							onSaveMarker={this.onSaveMarkerClick.bind(this)}
 							onDeleteMarkerClick={this.onDeleteMarkerClick.bind(this)}
 						/>

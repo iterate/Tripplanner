@@ -56,14 +56,6 @@ const DeleteBtn = styled.button`
 `;
 
 class PointInfo extends Component {
-	componentWillMount() {
-		this.setState({
-			title: this.props.title,
-			link: this.props.link,
-			comment: this.props.comment
-		});
-	}
-
 	render() {
 		return (
 			<PointDiv>
@@ -76,28 +68,25 @@ class PointInfo extends Component {
 				</PinTitle>
 				<InputBox
 					placeholder={"Title"}
-					value={this.state.title}
-					onChange={e => this.setState({ title: e.target.value })}
-					onKeyDown={this.props.onTextKeyDown}
+					value={this.props.title}
+					onChange={this.props.onTitleChange}
 				/>
 				<InputBox
 					placeholder={"Link"}
-					value={this.state.link}
-					onChange={e => this.setState({ link: e.target.value })}
-					onKeyDown={this.props.onTextKeyDown}
+					value={this.props.link}
+					onChange={this.props.onLinkChange}
 				/>
 				<InputBox
 					placeholder={"Comment"}
-					value={this.state.comment}
-					onChange={e => this.setState({ comment: e.target.value })}
-					onKeyDown={this.props.onTextKeyDown}
+					value={this.props.comment}
+					onChange={this.props.onCommentChange}
 				/>
 				<Button
 					onClick={e =>
 						this.props.onSaveMarker(e, {
-							title: this.state.title,
-							link: this.state.link,
-							comment: this.state.comment
+							title: this.props.title,
+							link: this.props.link,
+							comment: this.props.comment
 						})
 					}
 				>
