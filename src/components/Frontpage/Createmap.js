@@ -53,12 +53,11 @@ class Createmap extends Component {
     });
   }
 
-  clickHandler = (description, cb) => {
+  registerClick = (description) => {
     ReactGA.event({
       category: "Navigation",
       action: description
     });
-    return cb;
   };
 
   render() {
@@ -87,28 +86,20 @@ class Createmap extends Component {
         </div>
         {this.isExistingMap() ? (
           <React.Fragment>
-            <Button
-              onClick={this.clickHandler(
-                "Visit map",
-                this.props.onVisitMapClick
-              )}
-            >
-              Visit map
-            </Button>
+            <Button onClick={ (e) => {
+              this.registerClick("Visit map");
+              this.props.onVisitMapClick(e);
+              }}>Visit map</Button>
             <ChangeViewA onClick={this.changeView.bind(this)}>
               Create a new map?
             </ChangeViewA>
           </React.Fragment>
         ) : (
           <React.Fragment>
-            <Button
-              onClick={this.clickHandler(
-                "Create map",
-                this.props.onCreateRoomClick
-              )}
-            >
-              Create map
-            </Button>
+            <Button onClick={ (e) => {
+              this.registerClick("Create map");
+              this.props.onCreateRoomClick(e);
+              }}>Create map</Button>
             <ChangeViewA onClick={this.changeView.bind(this)}>
               Already have a map?
             </ChangeViewA>
