@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import ReactGA from "react-ga";
 import Warning from "./../Warning";
+import Button from "../ButtonComponent";
+import InputBox from "../InputComponentStyle";
+
+ReactGA.initialize("UA-122456830-1");
 
 const CreateMapDiv = styled.div`
   font-weight: 300;
@@ -29,38 +34,6 @@ const CreateMapDiv = styled.div`
 `;
 const CreateMapTitle = styled.h3``;
 
-const InputBox = styled.input`
-  width: 200px;
-  height: 30px;
-  font-size: 14px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: rgb(202, 202, 202);
-  border-image: initial;
-  border-radius: 1px;
-  margin-left: 10px;
-`;
-const Button = styled.button`
-  background-color: rgb(123, 157, 179);
-  color: white;
-  text-align: center;
-  display: inline-block;
-  font-size: 16px;
-  cursor: pointer;
-  border-width: initial;
-  border-style: none;
-  border-color: initial;
-  border-image: initial;
-  padding: 10px 24px;
-  text-decoration: none;
-  border-radius: 4px;
-  margin: 10px 20px;
-  width: 60%;
-  &:hover {
-    background: rgb(151, 183, 204);
-  }
-`;
-
 const ChangeViewA = styled.a`
   cursor: pointer;
   font-weight: 400;
@@ -78,6 +51,13 @@ class Createmap extends Component {
       existingMap: !this.state.existingMap
     });
   }
+
+  registerClick = (description) => {
+    ReactGA.event({
+      category: "Navigation",
+      action: description
+    });
+  };
 
   render() {
     return (
@@ -105,14 +85,20 @@ class Createmap extends Component {
         </div>
         {this.isExistingMap() ? (
           <React.Fragment>
-            <Button onClick={this.props.onVisitMapClick}>Visit map</Button>
+            <Button onClick={ (e) => {
+              this.registerClick("Visit map");
+              this.props.onVisitMapClick(e);
+              }}>Visit map</Button>
             <ChangeViewA onClick={this.changeView.bind(this)}>
               Create a new map?
             </ChangeViewA>
           </React.Fragment>
         ) : (
           <React.Fragment>
-            <Button onClick={this.props.onCreateRoomClick}>Create map</Button>
+            <Button onClick={ (e) => {
+              this.registerClick("Create map");
+              this.props.onCreateRoomClick(e);
+              }}>Create map</Button>
             <ChangeViewA onClick={this.changeView.bind(this)}>
               Already have a map?
             </ChangeViewA>

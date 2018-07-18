@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import Button from "./ButtonComponent";
+import Form from "./Form";
 
 const DevelopmentDiv = styled.div`
   background: #ffffffd4;
@@ -12,10 +14,16 @@ const DevelopmentDiv = styled.div`
   padding: 10px;
 `;
 
+const StyledBtn = styled(Button)`
+  margin: auto;
+`;
+
 const Createmap = props => (
   <DevelopmentDiv>
-    <h3>This map is under development</h3>
-    <span>We would love to hear your feedback - tripplanner@iterate.no </span>
+    <h3>This map is a pilot project</h3>
+    <span>We are testing a new concept,</span>
+    <span>and would love to hear your feedback! </span>
+    <Form />
   </DevelopmentDiv>
 );
 
