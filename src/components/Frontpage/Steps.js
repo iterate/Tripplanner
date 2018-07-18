@@ -23,7 +23,7 @@ const Steps = () => (
       img={"/images/map.png"}
       stepHeading={"Create a map.."}
       spanTxt={
-        "that will work as a visual planner.In the map you can add pins to places you would like to wisit on your next trip."
+        "that will work as a visual planner. In the map you can add pins to places you would like to visit on your next trip."
       }
     />
     <Step
