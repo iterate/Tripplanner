@@ -6,12 +6,15 @@ import firebase from "firebase";
 // 	addMarkerListener: this.addMarkerListener.bind(this)
 // };
 const database = {
-  storeMarker: storeMarker,
   loadMarkersOnce: loadMarkersOnce,
-  addMarkerListener: addMarkerListener,
+  addMarkerCreatedListener: addMarkerCreatedListener,
+  addMarkerChangedListener: addMarkerChangedListener,
+  addMarkerRemovedListener: addMarkerRemovedListener,
+  storeMarker: storeMarker,
+  updateMarker: updateMarker,
+  removeMarker,
   checkIfRoomExists: checkIfRoomExists,
   createRoom: createRoom,
-  updateMarker: updateMarker,
   storeFeedback: storeFeedback
 };
 export default database;
@@ -76,6 +79,8 @@ function storeMarker(roomId, markerData, callbackNewkey, callbackMarkerStored) {
     //add the new key as an attribute to the marker
     markerData["key"] = newKey;
 
+    console.log("Marker is beeing stored", markerData);
+
     //store marker data at the unique location
     firebase
       .database()
@@ -109,7 +114,6 @@ function storeFeedback(feedback) {
     feedbackWasStored = false;
   }
 }
-
 // Update the marker given by data.key with data in the data object.
 // Attributes not in the data objects will remain.
 // Callbacks with wether the marker was actually updated.
@@ -133,6 +137,25 @@ function updateMarker(roomId, markerId, data, callback) {
   callback !== undefined && callback(markerWasUpdated);
 }
 
+function removeMarker(roomId, markerId, callback) {
+  markerId === undefined &&
+    console.log("No markerId given when removing marker");
+
+  let markerWasRemoved;
+  try {
+    firebase
+      .database()
+      .ref("rooms/" + roomId + "/markers/" + markerId)
+      .set(null);
+
+    markerWasRemoved = true;
+  } catch (e) {
+    markerWasRemoved = false;
+  }
+
+  callback && callback(markerWasRemoved);
+}
+
 //returns all markers within a given room.
 // callbacks: an object where each key is an marker id, and the value is the marker data
 function loadMarkersOnce(roomId, callback) {
@@ -144,7 +167,25 @@ function loadMarkersOnce(roomId, callback) {
 
 // initially callbacks once for each existing marker for the given room in the datanase
 // thereafter get notified whenever a new marker is added
-function addMarkerListener(roomId, callback) {
+function addMarkerCreatedListener(roomId, listener) {
   var roomRef = firebase.database().ref("/rooms/" + roomId + "/markers");
-  roomRef.on("child_added", snapshot => callback(snapshot.val()));
+  roomRef.on("child_added", snapshot => listener(snapshot.val()));
 }
+function addMarkerChangedListener(roomId, listener) {
+  var roomRef = firebase.database().ref("/rooms/" + roomId + "/markers");
+  roomRef.on("child_changed", snapshot => listener(snapshot.val()));
+}
+function addMarkerRemovedListener(roomId, listener) {
+  var roomRef = firebase.database().ref("/rooms/" + roomId + "/markers");
+  roomRef.on("child_removed", snapshot => listener(snapshot.val()));
+}
+
+// function addMarkerUpdateListener(roomId, markerKey, listener) {
+// 	var markerRef = firebase
+// 		.database()
+// 		.ref("/rooms/" + roomId + "/markers/" + markerKey);
+// 	markerRef.on("value", snapshot => {
+// 		console.log("Marker updated", snapshot.val());
+// 		listener(snapshot.val());
+// 	});
+// }
