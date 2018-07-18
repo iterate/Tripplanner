@@ -6,10 +6,13 @@ import Database from "../database";
 const FeedbackForm = styled.form`
   display: flex;
   flex-direction: column;
+  padding: 10px;
+  align-items: center;
 `;
 const FeedbackArea = styled.textarea`
   height: 100px;
   resize: none;
+  width: 100%;
 `;
 
 class Form extends React.Component {
@@ -27,7 +30,7 @@ class Form extends React.Component {
 
   handleSubmit(event) {
     if (this.state.value == "") {
-      alert("Write something");
+      alert("Feedback is empty");
     } else {
       alert("Thank you for your feedback :)");
       Database.storeFeedback(this.state.value);
@@ -39,6 +42,7 @@ class Form extends React.Component {
     return (
       <FeedbackForm onSubmit={this.handleSubmit}>
         <FeedbackArea
+          placeholder="Let us know what you think :)"
           onChange={this.handleChange}
           value={this.state.value}
           id="FeedbackTxt"
