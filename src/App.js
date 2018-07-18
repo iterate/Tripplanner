@@ -71,13 +71,9 @@ class App extends Component {
     //If the room requested to create already exist, display a message and don't create the room.
     //Otherwise create it and navigate to it
     database.checkIfRoomExists(newName, exists => {
-      if (!exists) {
-        this.setState({ notExistsWarning: true });
-        return;
-      }
-
-      this.setState({ notExistsWarning: false });
-      window.location.pathname = newPath;
+      this.setState({ notExistsWarning: !exists });
+      if (exists)
+        window.location.pathname = newPath;
     });
   }
 
