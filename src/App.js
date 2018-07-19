@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import VisDatabaseTest from "./components/VisDatabaseTest";
-import MapboxWrapper from "./components/MapComponents/MapboxWrapper";
+import MapboxWrapper from "./components/MapboxWrapper";
 import database from "./database";
 import WaitPage from "./components/WaitPage";
 import Frontpage from "./components/Frontpage";
