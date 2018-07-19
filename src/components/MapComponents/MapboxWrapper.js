@@ -273,7 +273,7 @@ class MapboxWrapper extends React.Component {
 	render = () => {
 		return (
 			<ReactMapGL
-				mapStyle={Config.styles.outdoors}
+				mapStyle={Config.styles.leshine}
 				ref={this.state.mapRef}
 				mapboxApiAccessToken={Config.accessToken}
 				{...this.state.viewport}
