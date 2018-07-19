@@ -48,8 +48,10 @@ class Form extends React.Component {
     if (this.state.feedbackValue == "") {
       alert("Feedback field is empty.");
     } else {
+
+      let email = this.state.emailValue || "--no email--";
+      Database.storeFeedback(this.state.feedbackValue, email);
       alert("Thank you for your feedback :)");
-      Database.storeFeedback(this.state.feedbackValue, this.state.emailValue);
     }
     event.preventDefault();
   }
