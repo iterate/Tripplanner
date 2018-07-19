@@ -1,6 +1,7 @@
 {
 	"accessToken": "pk.eyJ1IjoibmluYXRoOTMiLCJhIjoiY2pqaWlscDRsM3Q2aDNrcGxsaHQ1dG02NCJ9.7hwR--67HQrjo9MDxJ8HJQ",
 	"styles": {
-		"light": "mapbox://styles/mapbox/light-v9"
+		"light": "mapbox://styles/mapbox/light-v9",
+		"outdoors": "mapbox://styles/mapbox/outdoors-v9"
 	}
 }
