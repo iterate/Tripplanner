@@ -128,7 +128,7 @@ class App extends Component {
 			return (
 				<PremapForm
 					onClick={() =>
-						(window.location.pathname = this.state.createdRoomPath)
+						(window.location.pathname = this.state.createdRoomPath || "/")
 					}
 				/>
 			);

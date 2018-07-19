@@ -19,7 +19,7 @@ const Button = styled.button`
 `;
 const List = styled.ul`
 	display: table;
-	margin: 30% auto;
+	margin: 10% auto;
 	text-align: center;
 	list-style-type: none;
 `;
@@ -28,14 +28,19 @@ const Li = styled.li`
 	margin: 10px 0;
 `;
 
+const title = "What do you want to do?";
+
 const options = [
-	"I want to find new travel locations",
-	"I have a lot of travel locations and want to organize them",
-	"I am just browsing"
+	"Find new travel locations",
+	"Organize my exsisting travel plans",
+	//"Share travel plans with friends",
+	"Just looking"
 ];
 
 export default class PremapForm extends Component {
-	onClick = (opt, i) => {};
+	onClick = (opt, i) => {
+		Database.storePremapFormFeedback(opt, () => this.props.onClick());
+	};
 
 	render() {
 		let btnElements = options.map((opt, i) => (
@@ -45,7 +50,14 @@ export default class PremapForm extends Component {
 		));
 		this.shuffle(btnElements);
 
-		return <List>{btnElements}</List>;
+		return (
+			<List>
+				<Li>
+					<h1 style={{ color: "white" }}>{title}</h1>
+				</Li>
+				{btnElements}
+			</List>
+		);
 	}
 
 	shuffle = array => {
