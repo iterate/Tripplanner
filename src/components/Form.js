@@ -50,7 +50,8 @@ class Form extends React.Component {
     } else {
 
       let email = this.state.emailValue || "--no email--";
-      Database.storeFeedback(this.state.feedbackValue, email);
+      let roomId = this.props.roomId || "--no room--";
+      Database.storeFeedback(roomId, this.state.feedbackValue, email);
       alert("Thank you for your feedback :)");
     }
     event.preventDefault();

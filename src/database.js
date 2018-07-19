@@ -114,7 +114,7 @@ function storeMarker(roomId, markerData, callbackNewkey, callbackMarkerStored) {
 //     feedbackWasStored = false;
 //   }
 // }
-function storeFeedback(feedback, email) {
+function storeFeedback(roomId, feedback, email) {
   let feedbackWasStored;
   let newKey = null;
   try {
@@ -128,7 +128,7 @@ function storeFeedback(feedback, email) {
     firebase
       .database()
       .ref("/feedback/" + newKey + "/") //feedback + "/email/" + email)
-      .set({ feedback: feedback, email: email });
+      .set({ roomId:roomId, feedback: feedback, email: email });
     feedbackWasStored = true;
   } catch (e) {
     feedbackWasStored = false;

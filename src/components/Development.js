@@ -23,7 +23,7 @@ const Createmap = props => (
     <h3>This map is a pilot project</h3>
     <span>We are testing a new concept,</span>
     <span>and would love to hear your feedback! </span>
-    <Form />
+    <Form roomId={props.roomId}/>
   </DevelopmentDiv>
 );
 
