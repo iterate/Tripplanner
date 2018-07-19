@@ -17,6 +17,16 @@ const Button = styled.button`
 	text-decoration: none;
 	border-radius: 10px;
 `;
+const List = styled.ul`
+	display: table;
+	margin: 30% auto;
+	text-align: center;
+	list-style-type: none;
+`;
+const Li = styled.li`
+	//list-style-type: none;
+	margin: 10px 0;
+`;
 
 const options = [
 	"I want to find new travel locations",
@@ -25,15 +35,17 @@ const options = [
 ];
 
 export default class PremapForm extends Component {
-	onClick = i => {};
+	onClick = (opt, i) => {};
 
 	render() {
-		let btnElements = options.map(i => (
-			<Button onClick={() => this.onClick(i)}>{options[i]}</Button>
+		let btnElements = options.map((opt, i) => (
+			<Li>
+				<Button onClick={() => this.onClick(opt, i)}>{opt}</Button>
+			</Li>
 		));
 		//this.shuffle(btnElements);
 
-		return <fragment>{btnElements}</fragment>;
+		return <List>{btnElements}</List>;
 	}
 
 	shuffle = array => {
