@@ -6,6 +6,7 @@ import MARKER_STYLE from "./marker-style2";
 import Geocoder from "./Geocoder";
 import PointInfo from "../PointInfo";
 import styled from "styled-components";
+import Database from "../../database";
 
 const ScreenedPointInfo = styled(PointInfo)`
 	//z-index: 10;
@@ -33,15 +34,15 @@ class MapboxWrapper extends React.Component {
 	};
 
 	componentDidMount = () => {
-		this.props.database.addMarkerCreatedListener(
+		Database.addMarkerCreatedListener(
 			this.props.roomId,
 			this.onMarkerLoadedFromDB
 		);
-		this.props.database.addMarkerChangedListener(
+		Database.addMarkerChangedListener(
 			this.props.roomId,
 			this.updateMarkerInState
 		);
-		this.props.database.addMarkerRemovedListener(
+		Database.addMarkerRemovedListener(
 			this.props.roomId,
 			this.onMarkerRemovedInDB
 		);
@@ -68,13 +69,13 @@ class MapboxWrapper extends React.Component {
 			...data
 		};
 		console.log("Pushing marker to db:", newMarker);
-		this.props.database.storeMarker(this.props.roomId, newMarker, newKey => {
+		Database.storeMarker(this.props.roomId, newMarker, newKey => {
 			this.setState({ lastMarkerCreatedKey: newKey });
 		});
 	};
 
 	updateMarkerInDB = (markerId, data, callback) => {
-		this.props.database.updateMarker(
+		Database.updateMarker(
 			this.props.roomId,
 			markerId,
 			data,
@@ -83,7 +84,7 @@ class MapboxWrapper extends React.Component {
 	};
 
 	removeMarkerFromDb = markerKey => {
-		this.props.database.removeMarker(this.props.roomId, markerKey);
+		Database.removeMarker(this.props.roomId, markerKey);
 	};
 
 	pushMarkerToState = (data, callback) => {
