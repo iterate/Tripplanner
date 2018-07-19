@@ -43,7 +43,7 @@ export default class PremapForm extends Component {
 				<Button onClick={() => this.onClick(opt, i)}>{opt}</Button>
 			</Li>
 		));
-		//this.shuffle(btnElements);
+		this.shuffle(btnElements);
 
 		return <List>{btnElements}</List>;
 	}

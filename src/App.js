@@ -36,6 +36,8 @@ class App extends Component {
 		console.log("will mount", this.roomId);
 		if (this.roomId === "") {
 			this.setState({ page: stateFrontPage });
+		} else if (this.roomId === "form/form") {
+			this.setState({ page: stateForm });
 		} else {
 			database.checkIfRoomExists(this.roomId, roomExists => {
 				this.setState({ page: roomExists ? stateActiveMap : stateInactiveMap });
