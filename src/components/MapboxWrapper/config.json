@@ -1,0 +1,8 @@
+{
+	"accessToken": "pk.eyJ1Ijoiam9obmNoZSIsImEiOiJjamo4OGZlb2sxMGN6M3Bzd3NhdjdpbXJqIn0.m_Vt9izkJiX0PCPzVzqddQ",
+	"styles": {
+		"light": "mapbox://styles/mapbox/light-v9",
+		"outdoors": "mapbox://styles/mapbox/outdoors-v9",
+		"leshine": "mapbox://styles/johnche/cjjsi81252gad2srjdyj17bqy"
+	}
+}
