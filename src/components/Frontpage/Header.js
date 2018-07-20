@@ -24,11 +24,9 @@ const headingStyle = `
   color: white;
   // 
   @media (min-width: 768px) {
-    color: #49828e;
-    background: rgba(255, 255, 255, 0.75);
-    align-self: flex-start;
-    text-align: initial;
-    margin: 5px 100px;
+    color: #134B63;
+    align-self: center;
+    text-align: center;
     // margin-left: 100px;
   }
 `;
