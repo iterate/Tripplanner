@@ -46,21 +46,11 @@ const HeadingTitle = styled.h1`
   // color: #49828e !important;
 `;
 
-const HeadingSubtitle = styled.h3`
-  ${headingStyle};
-  display: none;
-  @media (min-width: 768px) {
-    display: inline;
-    font-size: 22px;
-  }
-`;
-
 const Header = props => (
   <HeaderDiv>
-    <HeadingTitle>One map to rule them all!</HeadingTitle>
-    <HeadingSubtitle>
-      Combine all your trip planning resources in one place.
-    </HeadingSubtitle>
+    <HeadingTitle>
+      Collect all your trip planning resources<br />in one map
+    </HeadingTitle>
     <Createmap {...props} />
   </HeaderDiv>
 );
