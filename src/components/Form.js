@@ -45,7 +45,7 @@ class Form extends React.Component {
   }
 
   handleSubmit(event) {
-    if (this.state.feedbackValue == "") {
+    if (this.state.feedbackValue === "") {
       alert("Feedback field is empty.");
     } else {
 
