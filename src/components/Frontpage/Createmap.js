@@ -19,18 +19,16 @@ const CreateMapDiv = styled.div`
   align-items: center;
 
   margin-bottom: 10px;
+  margin-top: 20px;
   flex-align: center;
 
   @media (min-width: 768px) {
     align-items: center;
-    align-self: flex-end;
-    margin-right: 30px;
   }
   @media (min-width: 1024px) {
     width: 500px;
     height: 500px;
     margin-bottom: 30px;
-    margin-right: 150px;
   }
 `;
 
