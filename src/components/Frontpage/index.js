@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import Header from "./Header";
 import Steps from "./Steps";
-import "./Frontpage.css";
 import Feedback from "./Feedback";
 
 const ContainerDiv = styled.div`
