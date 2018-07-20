@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import VisDatabaseTest from "./components/VisDatabaseTest";
 
 import database from "./database";
 import WaitPage from "./components/WaitPage";

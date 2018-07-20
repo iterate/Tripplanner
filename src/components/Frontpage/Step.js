@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { H3Heading, H1Heading, H2Heading } from "../HeadingStyles";
+import { H3Heading } from "../HeadingStyles";
 
 const StepDiv = styled.div`
   order: 1;

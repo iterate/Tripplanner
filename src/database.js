@@ -20,8 +20,6 @@ const database = {
 };
 export default database;
 
-const roomPath = "/rooms/";
-
 var config = {
 	apiKey: "AIzaSyCVzw8DEn6ohfXvSoHWrX5SZZeb-lWj5uM",
 	authDomain: "tripplanner-222bd.firebaseapp.com",

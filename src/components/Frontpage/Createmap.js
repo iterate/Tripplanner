@@ -33,7 +33,6 @@ const CreateMapDiv = styled.div`
     margin-right: 150px;
   }
 `;
-const CreateMapTitle = styled.h3``;
 
 const ChangeViewA = styled.a`
   cursor: pointer;
