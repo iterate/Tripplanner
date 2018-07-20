@@ -9,7 +9,7 @@ ReactGA.initialize("UA-122456830-1");
 
 const CreateMapDiv = styled.div`
   font-weight: 300;
-  background: rgba(255, 255, 255, 0.92);
+  background: #ffffff;
   padding: 20px;
   display: -ms-flexbox;
   display: flex;
@@ -20,14 +20,16 @@ const CreateMapDiv = styled.div`
 
   margin-bottom: 10px;
   margin-top: 20px;
+  border-radius: 4px;
   flex-align: center;
 
+  color: #5B5858;
   @media (min-width: 768px) {
     align-items: center;
   }
   @media (min-width: 1024px) {
     width: 500px;
-    height: 500px;
+    height: 200px;
     margin-bottom: 30px;
   }
 `;
