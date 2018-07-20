@@ -6,7 +6,6 @@ import "./Frontpage.css";
 import Feedback from "./Feedback";
 
 const ContainerDiv = styled.div`
-  max-width: 1400px;
   margin: auto;
 `;
 const Content = styled.div`

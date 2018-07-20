@@ -10,9 +10,12 @@ const HeaderDiv = styled.div`
     align-items: center;
     align-self: flex-end;
     background-image: url("./images/map_pins.jpg");
+    background-size: cover;
+    background-position: center;
+    width: 100vw;
   }
   @media (min-width: 1024px) {
-    height: 450px;
+    height: 100vh;
   }
 `;
 
