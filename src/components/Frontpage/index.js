@@ -6,7 +6,12 @@ import "./Frontpage.css";
 import Feedback from "./Feedback";
 
 const ContainerDiv = styled.div`
+  display: flex;
+  flex-direction: column;
   margin: auto;
+  font-family: 'roboto-light', sans-serif;
+  color: #134B63;
+
 `;
 const Content = styled.div`
   max-width: 1400px;
