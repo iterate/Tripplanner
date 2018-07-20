@@ -10,7 +10,7 @@ const ContainerDiv = styled.div`
   margin: auto;
   font-family: 'roboto-light', sans-serif;
   color: #134B63;
-
+  background-color: rgb(123, 157, 179);
 `;
 const Content = styled.div`
   max-width: 1400px;
