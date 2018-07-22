@@ -16,7 +16,7 @@ const Content = styled.div`
   max-width: 1400px;
   margin: auto;
   background: rgb(249, 247, 247);
-  padding-top: 100px;
+  padding-top: 40px;
   padding-bottom: 200px;
 `;
 
