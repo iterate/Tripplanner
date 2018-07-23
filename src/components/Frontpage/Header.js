@@ -9,10 +9,13 @@ const HeaderDiv = styled.div`
   @media (min-width: 768px) {
     align-items: center;
     align-self: flex-end;
-    background-image: url("./images/headerPhoto.png");
+    background-image: url("./images/map_pins.jpg");
+    background-size: cover;
+    background-position: center;
+    width: 100vw;
   }
   @media (min-width: 1024px) {
-    height: 450px;
+    height: 90vh;
   }
 `;
 
@@ -21,11 +24,9 @@ const headingStyle = `
   color: white;
   // 
   @media (min-width: 768px) {
-    color: #49828e;
-    background: rgba(255, 255, 255, 0.75);
-    align-self: flex-start;
-    text-align: initial;
-    margin: 5px 100px;
+    color: #134B63;
+    align-self: center;
+    text-align: center;
     // margin-left: 100px;
   }
 `;
@@ -43,21 +44,11 @@ const HeadingTitle = styled.h1`
   // color: #49828e !important;
 `;
 
-const HeadingSubtitle = styled.h3`
-  ${headingStyle};
-  display: none;
-  @media (min-width: 768px) {
-    display: inline;
-    font-size: 22px;
-  }
-`;
-
 const Header = props => (
   <HeaderDiv>
-    <HeadingTitle>One map to rule them all!</HeadingTitle>
-    <HeadingSubtitle>
-      Combine all your trip planning resources in one place.
-    </HeadingSubtitle>
+    <HeadingTitle>
+      Collect all your trip planning resources<br />in one map
+    </HeadingTitle>
     <Createmap {...props} />
   </HeaderDiv>
 );

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Button = styled.button`
-  background-color: rgb(123, 157, 179);
+  background-color: #7d767e;
   color: white;
   text-align: center;
   display: inline-block;
@@ -17,7 +17,7 @@ const Button = styled.button`
   margin: 10px 20px;
   width: 60%;
   &:hover {
-    background: rgb(151, 183, 204);
+    filter: brightness(120%);
   }
 `;
 export default Button;
