@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Step from "./Step";
 
 const StyledStep = styled(Step)`
+	background-color: #7d767e;
 	margin: auto;
 	color: white;
 `;

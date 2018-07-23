@@ -1,6 +1,6 @@
 import React from "react";
 import ReactMapGL, { Marker } from "react-map-gl";
-import Dimensions from "react-dimensions";
+import Dimensions from "./Dimensions";
 import Config from "./config.json";
 import MARKER_STYLE from "./marker-style2";
 import Geocoder from "./Geocoder";
