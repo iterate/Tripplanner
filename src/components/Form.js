@@ -7,23 +7,29 @@ import Database from "../database";
 const FeedbackForm = styled.form`
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 5px;
   align-items: center;
+  width: 80%;
+  margin: auto;
 `;
 const FeedbackArea = styled.textarea`
-  height: 100px;
+  height: 50px;
   resize: none;
   padding: 5px;
   border: 1px solid #cacaca;
   width: 100%;
-  margin: 10px 0px;
+  margin: 5px 0px;
+  font-size: 14px;
+  border-radius: 5px;
 `;
 
 const EmailStyledInput = styled(InputField)`
   width: 100%;
   padding: 0px;
-  margin: 10px 0px;
+  margin: 5px 0px;
   padding: 5px;
+  font-size: 14px;
+  border-radius: 5px;
 `;
 
 class Form extends React.Component {
@@ -48,7 +54,6 @@ class Form extends React.Component {
     if (this.state.feedbackValue === "") {
       alert("Feedback field is empty.");
     } else {
-
       let email = this.state.emailValue || "--no email--";
       let roomId = this.props.roomId || "--no room--";
       Database.storeFeedback(roomId, this.state.feedbackValue, email);
@@ -60,17 +65,17 @@ class Form extends React.Component {
   render() {
     return (
       <FeedbackForm onSubmit={this.handleSubmit}>
+        <FeedbackArea
+          onChange={this.handleAreaChange}
+          placeholder="Feedback"
+          value={this.state.feedbackValue}
+          id="FeedbackTxt"
+        />
         <EmailStyledInput
           onChange={this.handleInputChange}
           value={this.state.emailValue}
           id="emailTxt"
-          placeholder="Email address (optional)"
-        />
-        <FeedbackArea
-          onChange={this.handleAreaChange}
-          placeholder="Let us know what you think :)"
-          value={this.state.feedbackValue}
-          id="FeedbackTxt"
+          placeholder="Email (optional)"
         />
 
         <Button type="submit">Submit</Button>

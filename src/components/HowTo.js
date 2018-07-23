@@ -4,16 +4,21 @@ import Steps from "./Frontpage/Steps";
 
 const HowToDiv = styled.div`
   position: absolute;
-  bottom: 0px;
+  bottom: 20px;
+  right: 10px;
+  margin: auto;
   background: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
 `;
 const Show = styled.div`
   position: absolute;
-  bottom: 40px;
-  right:10px;
+  bottom: 30px;
+  left:10px;
   height:46px;
   width:46px
   background: white;

@@ -4,26 +4,42 @@ import Button from "./ButtonComponent";
 import Form from "./Form";
 
 const DevelopmentDiv = styled.div`
-  background: #ffffffd4;
+  background: #fff;
   position: absolute;
-  top: 10px;
-  left: 10px;
-  max-width: 400px;
+  bottom: 20px;
+  right: 10px;
+  max-width: 818px;
+  width: 500px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
   flex-direction: column;
+  -webkit-align-content: center;
+  -ms-flex-line-pack: center;
+  align-content: center;
+  text-align: center;
   padding: 10px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
 `;
 
-const StyledBtn = styled(Button)`
-  margin: auto;
+const Heading = styled.h3`
+  font-weight: bold;
+  margin: 10px;
 `;
 
 const Createmap = props => (
   <DevelopmentDiv>
-    <h3>This map is a pilot project</h3>
-    <span>We are testing a new concept,</span>
-    <span>and would love to hear your feedback! </span>
-    <Form roomId={props.roomId}/>
+    <Heading>Thank you for visiting!</Heading>
+    <span>
+      This map is currently under development,and your feedback is very valuable
+      to us 🙏
+    </span>
+    <Form roomId={props.roomId} />
   </DevelopmentDiv>
 );
 
