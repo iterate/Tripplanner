@@ -3,9 +3,11 @@ import styled from "styled-components";
 import Steps from "./Frontpage/Steps";
 
 const HowToDiv = styled.div`
+  font-family: "roboto-light", sans-serif;
+  max-width: 900px;
   position: absolute;
   bottom: 20px;
-  right: 10px;
+  left: 10px;
   margin: auto;
   background: #fff;
   display: flex;
@@ -30,6 +32,19 @@ const Show = styled.div`
   background-repeat:no-repeat;
   background-size: 46px;
 `;
+const ExitBtn = styled.div`
+  height: 30px;
+  width: 30px;
+  cursor: pointer;
+  background-image: url(./images/cancel.png);
+  background-repeat: no-repeat;
+  background-size: 30px;
+  position: relative;
+  -webkit-align-self: flex-end;
+  -ms-flex-item-align: end;
+  align-self: flex-start;
+  margin: 10px;
+`;
 
 export default class HowTo extends Component {
   state = { visible: false };
@@ -45,6 +60,7 @@ export default class HowTo extends Component {
         <Show onClick={this.toggleHowTo.bind(this)} />
         {this.state.visible ? (
           <HowToDiv>
+            <ExitBtn onClick={this.toggleHowTo.bind(this)} />
             <h1>How it works</h1>
             <Steps />
           </HowToDiv>

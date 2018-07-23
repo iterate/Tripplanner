@@ -31,7 +31,14 @@ const DescriptionDiv = styled.div`
     width: 80%;
   }
 `;
-
+const Thick = styled(H3Heading)`
+  font-weight: 600;
+  margin-right: 6px;
+`;
+const Heading = styled.div`
+  flex-direction: row;
+  display: flex;
+`;
 class Step extends Component {
   render() {
     return (
@@ -40,7 +47,11 @@ class Step extends Component {
           <Img src={this.props.img} />
         </ImgDiv>
         <DescriptionDiv>
-          <H3Heading>{this.props.stepHeading}</H3Heading>
+          <Heading>
+            <Thick>{this.props.highLight} </Thick>
+            <H3Heading>{this.props.stepHeading}</H3Heading>
+          </Heading>
+
           <SpanTxt>{this.props.spanTxt}</SpanTxt>
         </DescriptionDiv>
       </StepDiv>

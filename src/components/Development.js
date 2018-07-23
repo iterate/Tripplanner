@@ -4,6 +4,8 @@ import Button from "./ButtonComponent";
 import Form from "./Form";
 
 const DevelopmentDiv = styled.div`
+  font-family: "roboto-light", sans-serif;
+
   background: #fff;
   position: absolute;
   bottom: 20px;

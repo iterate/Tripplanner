@@ -21,21 +21,24 @@ const Steps = () => (
   <StepDiv>
     <Step
       img={"/images/map.png"}
-      stepHeading={"Pin your inspiration"}
+      highLight={"Pin"}
+      stepHeading={" your inspiration"}
       spanTxt={
         "In the map you can add pins to the places you would like to visit on your next trip."
       }
     />
     <Step
       img={"/images/friends.png"}
-      stepHeading={"Share with friends"}
+      highLight={"Share"}
+      stepHeading={" with friends"}
       spanTxt={
         "Just share the magic link, and you can plan the perfect trip, together."
       }
     />
     <Step
       img={"/images/plan.png"}
-      stepHeading={"Plan with ease"}
+      highLight={"Plan"}
+      stepHeading={" with ease"}
       spanTxt={
         "By linking to your regular travel inspiration-sites, blogs, or add tips from friends."
       }

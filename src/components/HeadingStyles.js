@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const H3Heading = styled.h3`
   text-align: inherit;
   font-size: 22px;
+  font-weight: 300;
 `;
 
 export const H2Heading = styled.h2`
