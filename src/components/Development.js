@@ -36,8 +36,8 @@ const Createmap = props => (
   <DevelopmentDiv>
     <Heading>Thank you for visiting!</Heading>
     <span>
-      This map is currently under development,and your feedback is very valuable
-      to us 🙏
+      This map is currently under development, and your feedback is very
+      valuable to us 🙏
     </span>
     <Form roomId={props.roomId} />
   </DevelopmentDiv>
