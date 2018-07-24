@@ -1,16 +1,14 @@
 import styled from "styled-components";
 
 const Button = styled.button`
-  background-color: #7d767e;
+  background-color: #618f9b;
   color: white;
   text-align: center;
   display: inline-block;
   font-size: 16px;
   cursor: pointer;
-  border-width: initial;
   border-style: none;
-  border-color: initial;
-  border-image: initial;
+
   padding: 10px 24px;
   text-decoration: none;
   border-radius: 4px;
@@ -18,6 +16,9 @@ const Button = styled.button`
   width: 60%;
   &:hover {
     filter: brightness(120%);
+  }
+  &:focus {
+    outline: none;
   }
 `;
 export default Button;

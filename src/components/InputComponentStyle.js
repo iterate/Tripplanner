@@ -10,6 +10,11 @@ const InputBox = styled.input`
   border-image: initial;
   border-radius: 1px;
   margin-left: 10px;
+  padding-left: 5px;
+  &:focus {
+    outline: none;
+    border: 1px solid #134b62;
+  }
 `;
 
 export default InputBox;
