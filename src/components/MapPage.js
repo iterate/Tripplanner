@@ -4,6 +4,7 @@ import Development from "./Development";
 import HowTo from "./HowTo";
 import styled from "styled-components";
 import RoomUrlField from "./RoomUrlField";
+import "./Geocoder.css";
 
 const FlexContainer = styled.div`
   display: flex;

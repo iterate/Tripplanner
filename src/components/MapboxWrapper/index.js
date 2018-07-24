@@ -292,7 +292,7 @@ class MapboxWrapper extends React.Component {
           mapRef={this.state.mapRef}
           onViewportChange={this.viewportHandler}
           mapboxApiAccessToken={Config.accessToken}
-          //   position={"topleft"}
+          inputPlaceholder={"Search for address/place"}
         />
       </ReactMapGL>
     );

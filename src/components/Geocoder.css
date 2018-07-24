@@ -1,0 +1,9 @@
+.mapboxgl-ctrl-top-right {
+  left: 5px !important;
+  right: auto !important;
+  width: 375px;
+}
+
+.mapboxgl-ctrl-top-right .mapboxgl-ctrl {
+  width: 100%;
+}
