@@ -21,7 +21,9 @@ const CreateMapDiv = styled.div`
   margin-bottom: 10px;
   margin-top: 20px;
   border-radius: 4px;
-  flex-align: center;
+flex-align: center;
+
+  box-shadow: -3px 3px 8px rgba(0, 0, 0, 0.2);
 
   color: #5B5858;
   @media (min-width: 768px) {
@@ -34,9 +36,27 @@ const CreateMapDiv = styled.div`
   }
 `;
 
-const ChangeViewA = styled.a`
-  cursor: pointer;
+const BoxTitle = styled.h3`
+  font-family: Roboto;
   font-weight: 400;
+  margin-top: 0.5em;
+`;
+
+const BoxInput = styled.div`
+  margin-top: 0.8em;
+  margin-bottom: 0.6em;
+`;
+
+const ChangeViewADescription = styled.span`
+  font-family: Roboto;
+  font-size: 16;
+  color: black;
+`;
+
+const ChangeViewA = styled.span`
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 18;
   color: #7292a7;
 `;
 
@@ -70,19 +90,19 @@ class Createmap extends Component {
         {/* {this.props.mapInUseWarning ? (
           <Warning warningl1="This map already exists" />
         ) : null} */}
-        <h3>
+        <BoxTitle>
           {this.isExistingMap()
             ? "Enter existing map"
             : "Create a map, start planning"}
-        </h3>
-        <div>
+        </BoxTitle>
+        <BoxInput>
           <span>tripplanner.iterate.no/</span>
           <InputBox
             placeholder="Groupname, tripname or other"
             onChange={this.props.onTextChange}
             onKeyDown={this.props.onTextKeyDown}
           />
-        </div>
+        </BoxInput>
         {this.isExistingMap() ? (
           <React.Fragment>
             <Button onClick={ (e) => {
@@ -99,9 +119,12 @@ class Createmap extends Component {
               this.registerClick("Create map");
               this.props.onCreateRoomClick(e);
               }}>Create map</Button>
-            <ChangeViewA onClick={this.changeView.bind(this)}>
-              Already have a map?
-            </ChangeViewA>
+            <div>
+              Already have a map?{' '}
+              <ChangeViewA onClick={this.changeView.bind(this)}>
+                Visit existing map
+              </ChangeViewA>
+            </div>
           </React.Fragment>
         )}
       </CreateMapDiv>
