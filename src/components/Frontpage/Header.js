@@ -20,7 +20,9 @@ const HeaderDiv = styled.div`
 `;
 
 const headingStyle = `
-  font-weight: 400;
+  font-family: Roboto;
+  font-size: 18px;
+  font-weight: 300;
   color: white;
   // 
   @media (min-width: 768px) {
@@ -33,8 +35,6 @@ const headingStyle = `
 
 const HeadingTitle = styled.h1`
   ${headingStyle};
-  font-size: 18px;
-  font-weight: 400;
   @media (min-width: 768px) {
     display: block;
     font-size: 30px;
