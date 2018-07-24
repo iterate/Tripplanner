@@ -9,9 +9,9 @@ const HeaderDiv = styled.div`
   @media (min-width: 768px) {
     align-items: center;
     align-self: flex-end;
-    background-image: url("./images/map_pins.jpg");
+    background-image: url("./images/map_pins_cropped.jpg");
     background-size: cover;
-    background-position: center;
+    background-position: 50% 40%;
     width: 100vw;
   }
   @media (min-width: 1024px) {
