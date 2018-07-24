@@ -15,7 +15,7 @@ const HeaderDiv = styled.div`
     width: 100vw;
   }
   @media (min-width: 1024px) {
-    height: 90vh;
+    height: 60vh;
   }
 `;
 
